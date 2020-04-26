@@ -76,7 +76,7 @@ integrate third-party modules.
 ## Why?
 
 I use it to work around NPM modules that don't have UMD builds when I want to
-use one of those modules in a userscript.
+use one of those modules in a [userscript](https://github.com/chocolateboy/userscripts).
 
 For example, let's say I want to use the following modules, which are available
 on NPM but don't have UMD builds:
