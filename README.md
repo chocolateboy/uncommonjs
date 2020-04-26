@@ -190,7 +190,7 @@ The following NPM scripts are available:
 
 ## COMPATIBILITY
 
-- any environment with ES6 Proxy support
+- any environment with [ES6 Proxy support](https://caniuse.com/#feat=proxy)
 
 ## SEE ALSO
 
