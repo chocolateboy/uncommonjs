@@ -7,6 +7,7 @@
 
 - [NAME](#name)
 - [FEATURES](#features)
+- [INSTALLATION](#installation)
 - [USAGE](#usage)
 - [DESCRIPTION](#description)
   - [Why?](#why)
@@ -38,6 +39,10 @@ UnCommonJS - a minimum viable shim for `module.exports`
 - tiny (&lt; 500 B minified)
 - no dependencies
 - suitable for userscripts
+
+# INSTALLATION
+
+    $ npm install @chocolateboy/uncommonjs
 
 # USAGE
 
