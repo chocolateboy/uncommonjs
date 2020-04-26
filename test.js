@@ -28,7 +28,7 @@ test('single export', t => {
     t.deepEqual(module.exports, { foo })
 })
 
-test('multiple exports, different names', t => {
+test('multiple named exports, different names', t => {
     module.exports.foo = foo
     module.exports.bar = bar
     t.deepEqual(module.exports, { foo, bar })
@@ -62,7 +62,7 @@ test('multiple default exports (named functions)', t => {
 })
 
 test('mixed exports', t => {
-    const anon = { foo: 42 }
+    const anon = [() => {}]
 
     module.exports.foo = foo
     module.exports.foo = bar
