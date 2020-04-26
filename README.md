@@ -15,6 +15,7 @@
 - [GLOBALS](#globals)
   - [module.exports](#moduleexports)
   - [exports](#exports)
+  - [require](#require)
 - [DEVELOPMENT](#development)
   - [NPM Scripts](#npm-scripts)
   - [COMPATIBILITY](#compatibility)
@@ -27,7 +28,7 @@
 
 # NAME
 
-UnCommonJS - a minimal viable shim for CommonJS' `module.exports`
+UnCommonJS - a minimum viable shim for CommonJS' `module.exports`
 
 # FEATURES
 
@@ -53,7 +54,7 @@ UnCommonJS - a minimal viable shim for CommonJS' `module.exports`
 console.log(module.exports)             // { once: ..., sha1: ..., sha256: ..., ... }
 console.log(exports === module.exports) // true
 
-const { once, sha256: encrypt } = module.exports
+const { once, sha256: encrypt } = exports
 
 // ...
 ```
@@ -86,9 +87,9 @@ on NPM but don't have UMD builds:
 
 Since both of these modules are simple, small, and standalone — i.e. they don't
 use `require` — I can use UnCommonJS to expose `modules.exports` and `exports`
-globals to these packages which they can attach their exports to. I can then
-pull these exported values (functions in this case) into a userscript simply by
-extracting them from the `module.exports`/`exports` store:
+globals which they can attach their exports to. I can then pull these exported
+values (functions in this case) into a userscript simply by extracting them
+from the `module.exports`/`exports` store:
 
 ```javascript
 // ==UserScript==
@@ -138,17 +139,38 @@ are equivalent to named assignments to `module.exports`.
 
 The first time a named export is assigned, it is given the specified name. If
 subsequent assignments are made with the same name, they are assigned unique
-IDs by appending numeric suffixes, e.g.: `foo`, `foo_1`, `foo_2` etc.
+names by appending numeric suffixes, e.g.: `foo`, `foo_1`, `foo_2` etc.
 
 In addition to named assignments, default exports can be assigned directly to
 `module.exports`. Note, unlike named assignments, which can be assigned to
-`exports`, these only work by assignment to `module.exports`. As with named
-assignments, duplicate default assignments are assigned distinct names by
-appending a numeric suffix, i.e. `default`, `default_1`, `default_2` etc.
+`exports`, these only work by assignment to `module.exports`.
+
+If a named function is assigned to `module.exports`, it is equivalent to a
+named assignment, e.g.:
+
+```javascript
+module.exports = function foo () { }
+```
+
+is equivalent to:
+
+```javascript
+module.exports.foo = function foo () { }
+```
+
+If the assigned value is an anonymous function or a non-function, it is
+assigned the name `default`. As with named assignments, duplicate default
+assignments are assigned distinct names by appending a numeric suffix, e.g.
+`default`, `default_1`, `default_2` etc.
 
 ## exports
 
 This is an alias for `module.exports`.
+
+## require
+
+This is defined as a function purely for diagnostic purposes. When called it
+raises an exception which includes the name of the required module.
 
 # DEVELOPMENT
 
