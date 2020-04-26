@@ -1,7 +1,7 @@
 {
     "name": "@chocolateboy/uncommonjs",
-    "version": "0.0.1",
-    "description": "A minimum viable shim for CommonJS' module.exports",
+    "version": "0.0.2",
+    "description": "A minimum viable shim for module.exports",
     "unpkg": "index.js",
     "jsdelivr": "index.js",
     "main": "index.js",
@@ -11,7 +11,7 @@
     "scripts": {
         "build": "terser --compress --mangle -o index.min.js < index.js",
         "doctoc": "markdown-toc --bullets=- -i README.md",
-        "prepublishOnly": "run-p build doctoc",
+        "prepublishOnly": "run-p build doctoc test",
         "test": "ava --verbose --serial test.js"
     },
     "files": [

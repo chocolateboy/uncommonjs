@@ -28,7 +28,7 @@
 
 # NAME
 
-UnCommonJS - a minimum viable shim for CommonJS' `module.exports`
+UnCommonJS - a minimum viable shim for `module.exports`
 
 # FEATURES
 
@@ -46,12 +46,12 @@ UnCommonJS - a minimum viable shim for CommonJS' `module.exports`
 // @name          My Userscript
 // @description   A userscript which uses some CommonJS modules
 // @include       https://www.example.com/*
-// @require       https://unpkg.com/@chocolateboy/uncommonjs@0.0.1
+// @require       https://unpkg.com/@chocolateboy/uncommonjs@0.0.2
 // @require       https://cdn.jsdelivr.net/npm/crypto-hash@1.2.2
 // @require       https://cdn.jsdelivr.net/npm/tiny-once@1.0.0
 // ==/UserScript==
 
-console.log(module.exports)             // { once: ..., sha1: ..., sha256: ..., ... }
+console.log(module.exports) // { once: ..., sha1: ..., sha256: ..., ... }
 console.log(exports === module.exports) // true
 
 const { once, sha256: encrypt } = exports
@@ -62,9 +62,8 @@ const { once, sha256: encrypt } = exports
 # DESCRIPTION
 
 UnCommonJS is a tiny library which exposes a `module.exports` global (and
-`exports` alias) which behaves in a similar way to the CommonJS built-in. It
-can be used to gather exports in environments which don't otherwise support
-CommonJS.
+`exports` alias) which behaves like the CommonJS built-in. It can be used to
+gather exports in environments which don't otherwise support CommonJS.
 
 Names are deduplicated, so that e.g. if multiple modules export the same name
 or assign multiple values to `module.exports` (i.e. multiple default exports),
@@ -86,7 +85,7 @@ on NPM but don't have UMD builds:
 - [tiny-once](https://www.npmjs.com/package/tiny-once)
 
 Since both of these modules are simple, small, and standalone — i.e. they don't
-use `require` — I can use UnCommonJS to expose `modules.exports` and `exports`
+use `require` — I can use UnCommonJS to expose `module.exports` and `exports`
 globals which they can attach their exports to. I can then pull these exported
 values (functions in this case) into a userscript simply by extracting them
 from the `module.exports`/`exports` store:
@@ -94,7 +93,7 @@ from the `module.exports`/`exports` store:
 ```javascript
 // ==UserScript==
 // @name     My Userscript
-// @require  https://unpkg.com/@chocolateboy/uncommonjs@0.0.1
+// @require  https://unpkg.com/@chocolateboy/uncommonjs@0.0.2
 // @require  https://cdn.jsdelivr.net/npm/crypto-hash@1.2.2
 // @require  https://cdn.jsdelivr.net/npm/tiny-once@1.0.0
 // ==/UserScript==
@@ -116,7 +115,7 @@ situations or environments where sane solutions are available.
   required modules to ensure they don't use it
 - pin the versions of the required modules to avoid being caught out if they
   update their dependencies
-- load UMD packages **before** this shim, otherwise it will mislead them into
+- load UMD bundles **before** this shim, otherwise it will mislead them into
   thinking it's a real CommonJS environment
 
 # GLOBALS
@@ -131,22 +130,22 @@ An object (dictionary) of exported values which can be assigned to by name, e.g.
 
 ```javascript
 module.exports.foo = function foo () { ... }
-module.exports.bar = function bar () { ... }
+module.exports.bar = function () { ... }
 ```
 
 `exports` is an alias for `module.exports`, so named assignments to `exports`
-are equivalent to named assignments to `module.exports`.
+are identical to named assignments to `module.exports`.
 
 The first time a named export is assigned, it is given the specified name. If
 subsequent assignments are made with the same name, they are assigned unique
 names by appending numeric suffixes, e.g.: `foo`, `foo_1`, `foo_2` etc.
 
-In addition to named assignments, default exports can be assigned directly to
-`module.exports`. Note, unlike named assignments, which can be assigned to
-`exports`, these only work by assignment to `module.exports`.
+In addition to named exports, default exports can be assigned directly to
+`module.exports`. Note: unlike named exports, which can be assigned to
+`exports`, default exports only work by assignment to `module.exports`.
 
 If a named function is assigned to `module.exports`, it is equivalent to a
-named assignment, e.g.:
+named export, e.g.:
 
 ```javascript
 module.exports = function foo () { }
@@ -159,9 +158,9 @@ module.exports.foo = function foo () { }
 ```
 
 If the assigned value is an anonymous function or a non-function, it is
-assigned the name `default`. As with named assignments, duplicate default
-assignments are assigned distinct names by appending a numeric suffix, e.g.
-`default`, `default_1`, `default_2` etc.
+assigned the name `default`. As with named exports, duplicate default exports
+are assigned distinct names by appending a numeric suffix, e.g. `default`,
+`default_1`, `default_2` etc.
 
 ## exports
 
@@ -169,7 +168,7 @@ This is an alias for `module.exports`.
 
 ## require
 
-This is defined as a function purely for diagnostic purposes. When called it
+This is defined as a function purely for diagnostic purposes. When called, it
 raises an exception which includes the name of the required module.
 
 # DEVELOPMENT
@@ -192,11 +191,11 @@ The following NPM scripts are available:
 
 - [GreasyFork Libraries](https://greasyfork.org/en/scripts/libraries)
 - [Observable - How to require stubborn modules](https://observablehq.com/@observablehq/how-to-require-stubborn-modules)
-- [packd](https://github.com/Rich-Harris/packd) - [web service](https://bundle.run/) which converts CommonJS modules to UMD
+- [packd](https://github.com/Rich-Harris/packd) - a [web service](https://bundle.run/) which converts CommonJS modules to UMD
 
 # VERSION
 
-0.0.1
+0.0.2
 
 # AUTHOR
 
