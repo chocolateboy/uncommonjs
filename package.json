@@ -11,7 +11,7 @@
     "scripts": {
         "build": "terser --compress --mangle -o index.min.js < index.js",
         "doctoc": "markdown-toc --bullets=- -i README.md",
-        "prepublishOnly": "run-p build doctoc test",
+        "prepublishOnly": "run-s doctoc build test",
         "test": "ava --verbose --serial test.js"
     },
     "files": [
