@@ -1,7 +1,8 @@
-**0.1.0** - TBD
+**0.1.0** - 2020-05-01
 
 - export the keys of plain objects as named exports, in addition to exporting
   the object itself as "default", "default_1" etc.
+- documentation fixes
 
 **0.0.2** - 2020-04-26
 

@@ -19,8 +19,8 @@
   - [require](#require)
 - [DEVELOPMENT](#development)
   - [NPM Scripts](#npm-scripts)
-  - [COMPATIBILITY](#compatibility)
-  - [SEE ALSO](#see-also)
+- [COMPATIBILITY](#compatibility)
+- [SEE ALSO](#see-also)
 - [VERSION](#version)
 - [AUTHOR](#author)
 - [COPYRIGHT AND LICENSE](#copyright-and-license)
@@ -51,7 +51,7 @@ UnCommonJS - a minimum viable shim for `module.exports`
 // @name          My Userscript
 // @description   A userscript which uses some CommonJS modules
 // @include       https://www.example.com/*
-// @require       https://unpkg.com/@chocolateboy/uncommonjs@0.0.2
+// @require       https://unpkg.com/@chocolateboy/uncommonjs@0.1.0
 // @require       https://cdn.jsdelivr.net/npm/crypto-hash@1.2.2
 // @require       https://cdn.jsdelivr.net/npm/tiny-once@1.0.0
 // ==/UserScript==
@@ -93,12 +93,12 @@ Since both of these modules are simple, small, and standalone — i.e. they don'
 use `require` — I can use UnCommonJS to expose `module.exports` and `exports`
 globals which they can attach their exports to. I can then pull these exported
 values (functions in this case) into a userscript simply by extracting them
-from the `module.exports`/`exports` store:
+from the `module.exports`/`exports` cache:
 
 ```javascript
 // ==UserScript==
 // @name     My Userscript
-// @require  https://unpkg.com/@chocolateboy/uncommonjs@0.0.2
+// @require  https://unpkg.com/@chocolateboy/uncommonjs@0.1.0
 // @require  https://cdn.jsdelivr.net/npm/crypto-hash@1.2.2
 // @require  https://cdn.jsdelivr.net/npm/tiny-once@1.0.0
 // ==/UserScript==
@@ -118,6 +118,7 @@ situations or environments where sane solutions are available.
 
 - `require` is defined but not supported (it throws an exception): check the
   required modules to ensure they don't use it
+- `__filename` and `__dirname` are not supported
 - pin the versions of the required modules to avoid being caught out if they
   update their dependencies
 - load UMD bundles **before** this shim, otherwise it will mislead them into
@@ -201,23 +202,25 @@ raises an exception which includes the name of the required module.
 
 The following NPM scripts are available:
 
-* build - generate a minified version of the shim
+- build - generate the minified build of the library (index.min.js)
+- doctoc - update the table-of-contents (TOC) in the README
+- test - run the test suite
 
 </details>
 
-## COMPATIBILITY
+# COMPATIBILITY
 
 - any environment with [ES6 Proxy support](https://caniuse.com/#feat=proxy)
 
-## SEE ALSO
+# SEE ALSO
 
-- [GreasyFork Libraries](https://greasyfork.org/en/scripts/libraries)
+- [GreasyFork Libraries](https://greasyfork.org/scripts/libraries)
 - [Observable - How to require stubborn modules](https://observablehq.com/@observablehq/how-to-require-stubborn-modules)
 - [packd](https://github.com/Rich-Harris/packd) - a [web service](https://bundle.run/) which converts CommonJS modules to UMD
 
 # VERSION
 
-0.0.2
+0.1.0
 
 # AUTHOR
 
