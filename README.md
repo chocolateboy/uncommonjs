@@ -1,6 +1,6 @@
 # UnCommonJS
 
-[![Build Status](https://secure.travis-ci.org/chocolateboy/uncommonjs.svg)](https://travis-ci.org/chocolateboy/uncommonjs)
+[![Build Status](https://travis-ci.org/chocolateboy/uncommonjs.svg)](https://travis-ci.org/chocolateboy/uncommonjs)
 [![NPM Version](https://img.shields.io/npm/v/@chocolateboy/uncommonjs.svg)](https://www.npmjs.org/package/@chocolateboy/uncommonjs)
 
 <!-- toc -->
@@ -36,7 +36,7 @@ UnCommonJS - a minimum viable shim for `module.exports`
 - `module.exports`
 - `exports`
 - `require` (just for diagnostics - raises an exception if called)
-- tiny (&lt; 500 B minified)
+- tiny (~600 B minified)
 - no dependencies
 - suitable for userscripts
 
@@ -166,6 +166,23 @@ If the assigned value is an anonymous function or a non-function, it is
 assigned the name `default`. As with named exports, duplicate default exports
 are assigned distinct names by appending a numeric suffix, e.g. `default`,
 `default_1`, `default_2` etc.
+
+If a plain object is assigned to `module.exports`, its properties are assigned
+by name (the object's own, enumerable string keys) in addition to the default
+export, e.g.:
+
+```javascript
+const props = { foo, bar }
+module.exports = props
+```
+
+is equivalent to:
+
+```javascript
+module.exports.foo = foo
+module.exports.bar = bar
+module.exports.default = props
+```
 
 ## exports
 

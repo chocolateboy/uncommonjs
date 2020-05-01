@@ -28,28 +28,29 @@ test('single export', t => {
     t.deepEqual(module.exports, { foo })
 })
 
-test('multiple named exports, different names', t => {
+test('multiple named exports (different names)', t => {
     module.exports.foo = foo
     module.exports.bar = bar
     t.deepEqual(module.exports, { foo, bar })
 })
 
-test('multiple named exports, same name', t => {
+test('multiple named exports (same name)', t => {
     module.exports.foo = foo
     module.exports.foo = bar
     t.deepEqual(module.exports, { foo: foo, foo_1: bar })
 })
 
 test('multiple default exports (anonymous functions)', t => {
-    // it's quite hard to get a reference to an anonymous function in ES6
+    // it's quite hard to refer to an anonymous function in ES6 without
+    // accidentally naming it
     const anon = [() => {}]
     module.exports = anon[0]
     module.exports = anon[0]
     t.deepEqual(module.exports, { default: anon[0], default_1: anon[0] })
 })
 
-test('multiple default exports (non-functions)', t => {
-    const anon = { foo: 42 }
+test('multiple default exports (anonymous non-functions)', t => {
+    const anon = ['foo', 42]
     module.exports = anon
     module.exports = anon
     t.deepEqual(module.exports, { default: anon, default_1: anon })
@@ -61,30 +62,19 @@ test('multiple default exports (named functions)', t => {
     t.deepEqual(module.exports, { foo, bar })
 })
 
-test('mixed exports', t => {
-    const anon = [() => {}]
+test('multiple default exports (named properties)', t => {
+    const props = { foo, bar }
 
-    module.exports.foo = foo
-    module.exports.foo = bar
-
-    module.exports.bar = foo
-    module.exports.bar = bar
-
-    module.exports = foo
-    module.exports = bar
-
-    module.exports = anon[0]
-    module.exports = anon[0]
+    module.exports = props
+    module.exports = props
 
     t.deepEqual(module.exports, {
-        foo: foo,
-        foo_1: bar,
-        bar: foo,
+        foo,
+        bar,
+        default: props,
+        foo_1: foo,
         bar_1: bar,
-        foo_2: foo,
-        bar_2: bar,
-        default: anon[0],
-        default_1: anon[0],
+        default_1: props,
     })
 })
 

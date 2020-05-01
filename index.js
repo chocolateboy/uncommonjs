@@ -1,19 +1,18 @@
 (function () {
-    const uniqueName = function () {
-        const names = {}
+    const names = {}
+    const toString = {}.toString
 
-        return function (name) {
-            let nextIndex = names[name]
+    const uniqueName = function (name) {
+        let nextIndex = names[name]
 
-            if (nextIndex) {
-                names[name] += 1
-                return `${name}_${nextIndex}`
-            } else {
-                names[name] = 1
-                return name
-            }
+        if (nextIndex) {
+            names[name] += 1
+            return `${name}_${nextIndex}`
+        } else {
+            names[name] = 1
+            return name
         }
-    }()
+    }
 
     const $exports = new Proxy({}, {
         set (target, name, value) {
@@ -28,12 +27,26 @@
         },
 
         set exports (value) {
-            let key
+            // if the value is a plain object, export each of its keys as a
+            // named export (in addition to exporting the object itself as
+            // "default", "default_1" etc.)
+            if (toString.call(value) === '[object Object]') {
+                // since this is a convenience and the full object is still
+                // available as a fallback, we can afford to be strict in what
+                // we support/export here, namely: a) only string keys (i.e. not
+                // symbols) and b) only (own) enumerable properties
+                const keys = Object.keys(value)
 
-            if (typeof value === 'function' && value.name) {
-                key = value.name
-            } else {
-                key = 'default'
+                for (let i = 0; i < keys.length; ++i) {
+                    const key = keys[i]
+                    $exports[key] = value[key]
+                }
+            }
+
+            let key = 'default'
+
+            if (typeof value === 'function') {
+                key = value.name || key
             }
 
             $exports[key] = value
