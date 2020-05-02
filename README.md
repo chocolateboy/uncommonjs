@@ -52,7 +52,7 @@ UnCommonJS - a minimum viable shim for `module.exports`
 // @name          My Userscript
 // @description   A userscript which uses some CommonJS modules
 // @include       https://www.example.com/*
-// @require       https://unpkg.com/@chocolateboy/uncommonjs@0.1.0
+// @require       https://cdn.jsdelivr.net/gh/chocolateboy/uncommonjs@0.1.0/index.min.js
 // @require       https://cdn.jsdelivr.net/npm/crypto-hash@1.2.2
 // @require       https://cdn.jsdelivr.net/npm/tiny-once@1.0.0
 // ==/UserScript==
@@ -99,7 +99,7 @@ from the `module.exports`/`exports` cache:
 ```javascript
 // ==UserScript==
 // @name     My Userscript
-// @require  https://unpkg.com/@chocolateboy/uncommonjs@0.1.0
+// @require  https://cdn.jsdelivr.net/gh/chocolateboy/uncommonjs@0.1.0/index.min.js
 // @require  https://cdn.jsdelivr.net/npm/crypto-hash@1.2.2
 // @require  https://cdn.jsdelivr.net/npm/tiny-once@1.0.0
 // ==/UserScript==
