@@ -1,4 +1,4 @@
-**0.2.0** - TBD
+**0.2.0** - 2020-05-02
 
 - add `module.exported`, a read-only view of the exports without the
   Proxy wrapper
