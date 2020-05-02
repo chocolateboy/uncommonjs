@@ -14,8 +14,9 @@
   - [Why not?](#why-not)
   - [Caveats](#caveats)
 - [GLOBALS](#globals)
-  - [module.exports](#moduleexports)
   - [exports](#exports)
+  - [module.exported](#moduleexported)
+  - [module.exports](#moduleexports)
   - [require](#require)
 - [DEVELOPMENT](#development)
   - [NPM Scripts](#npm-scripts)
@@ -56,7 +57,7 @@ UnCommonJS - a minimum viable shim for `module.exports`
 // @require       https://cdn.jsdelivr.net/npm/tiny-once@1.0.0
 // ==/UserScript==
 
-console.log(module.exports) // { once: ..., sha1: ..., sha256: ..., ... }
+console.log(module.exported) // { once: ..., sha1: ..., sha256: ..., ... }
 console.log(exports === module.exports) // true
 
 const { once, sha256: encrypt } = exports
@@ -130,6 +131,30 @@ When this shim is loaded, the following variables are defined if they're not
 defined already. Unless noted, they should have the same behavior as the
 corresponding values in Node.js and other CommonJS environments.
 
+## exports
+
+This is an alias for [`module.exports`](#moduleexports).
+
+## module.exported
+
+[`module.exports`](#moduleexports) (and its [`exports`](#exports) alias) is
+implemented as a thin wrapper (an ES6 Proxy) around the actual exports which
+transparently handles name deduplication.
+
+Most of the time this distinction doesn't matter, but it can crop up when
+logging/debugging — e.g. when dumping the exported values with `console.log` —
+since some environments display the Proxy's internals, rather than its target,
+which can make it hard to see what's actually available. The `module.exported`
+property solves this by exposing a (read-only) view of the underlying object.
+
+```javascript
+console.log(module.exports)
+// Proxy { <target>: {…}, <handler>: {…} }
+
+console.log(module.exported)
+// Object { once: ..., sha1: ..., sha256: ..., ... }
+```
+
 ## module.exports
 
 An object (dictionary) of exported values which can be assigned to by name, e.g.:
@@ -184,10 +209,6 @@ module.exports.foo = foo
 module.exports.bar = bar
 module.exports.default = props
 ```
-
-## exports
-
-This is an alias for `module.exports`.
 
 ## require
 

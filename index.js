@@ -1,4 +1,5 @@
 (function () {
+    const $exported = {}
     const names = {}
     const toString = {}.toString
 
@@ -14,7 +15,7 @@
         }
     }
 
-    const $exports = new Proxy({}, {
+    const $exports = new Proxy($exported, {
         set (target, name, value) {
             const key = (typeof name === 'symbol') ? name : uniqueName(String(name))
             target[key] = value
@@ -22,6 +23,10 @@
     })
 
     const $module = {
+        get exported () {
+            return Object.assign({}, $exported)
+        },
+
         get exports () {
             return $exports
         },

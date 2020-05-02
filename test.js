@@ -3,6 +3,7 @@ const Fs   = require('fs')
 
 function foo () { return 'Foo' }
 function bar () { return 'Bar' }
+function baz () { return 'Baz' }
 
 test.beforeEach(t => {
     module = exports = require = undefined
@@ -78,11 +79,27 @@ test('multiple default exports (named properties)', t => {
     })
 })
 
-test('require is defined', t => {
-    t.is(typeof require, 'function')
-    t.is(require.name, 'require')
+test('module.exported', t => {
+    module.exports = foo
+    module.exports = bar
+
+    // module.exported !== module.exports
+    t.not (module.exported, module.exports)
+
+    // module.exported is immutable
+    module.exported.baz = baz
+    t.is(module.exported.baz, undefined)
+
+    // module.exported matches module.exports
+    t.deepEqual(module.exports, { foo, bar })
+    t.deepEqual(module.exported, { foo, bar })
 })
 
-test('require is not implemented', t => {
+test('require', t => {
+    // require is defined
+    t.is(typeof require, 'function')
+    t.is(require.name, 'require')
+
+    // require is not implemented
     t.throws(() => require('fs'), { message: /not implemented/ })
 })

@@ -1,3 +1,8 @@
+**0.2.0** - TBD
+
+- add `module.exported`, a read-only view of the exports without the
+  Proxy wrapper
+
 **0.1.0** - 2020-05-01
 
 - export the keys of plain objects as named exports, in addition to exporting
