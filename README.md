@@ -94,7 +94,7 @@ Since both of these modules are simple, small, and standalone — i.e. they don'
 use `require` — I can use UnCommonJS to expose `module.exports` and `exports`
 globals which they can attach their exports to. I can then pull these exported
 values (functions in this case) into a userscript simply by extracting them
-from the `module.exports`/`exports` cache:
+from the `module.exports`/`exports` object:
 
 ```javascript
 // ==UserScript==
@@ -143,8 +143,8 @@ transparently handles name deduplication.
 
 Most of the time this distinction doesn't matter, but it can crop up when
 logging/debugging — e.g. when dumping the exported values with `console.log` —
-since some environments display the Proxy's internals, rather than its target,
-which can make it hard to see what's actually available. The `module.exported`
+since some environments display the Proxy's internals, rather than its target.
+This can make it hard to see what's actually available. The `module.exported`
 property solves this by exposing a (read-only) view of the underlying object.
 
 ```javascript
