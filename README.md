@@ -168,9 +168,9 @@ module.exports.bar = function () { ... }
 are identical to named assignments to `module.exports`.
 
 The first time a named export is assigned, it is given the specified name.
-Assignments to the same name with the same value are ignored. If different
-values are assigned to the same name, they are assigned unique names by
-appending numeric suffixes, e.g.: `foo`, `foo_1`, `foo_2` etc.
+Subsequent assignments to the same name with the same value are ignored. If
+different values are assigned to the same name, they are assigned unique names
+by appending numeric suffixes, e.g.: `foo`, `foo_1`, `foo_2` etc.
 
 In addition to named exports, default exports can be assigned directly to
 `module.exports`. Note: unlike named exports, which can be assigned to
@@ -190,8 +190,8 @@ module.exports.foo = function foo () { }
 ```
 
 If the assigned value is an anonymous function or a non-function, it is
-assigned the name `default`. As with named exports, default exports with the
-same value are ignored and default assignments with different values are
+assigned the name `default`. As with named exports, default assignments with
+the same value are ignored and default assignments with different values are
 assigned distinct names by appending a numeric suffix, e.g. `default`,
 `default_1`, `default_2` etc.
 
