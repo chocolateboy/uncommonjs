@@ -9,7 +9,7 @@
     const toString = {}.toString
 
     // a helper function used to translate a requested name into a unique name
-    const uniqueName = function (name) {
+    const uniqueName = name => {
         if (seen[name]) {
             return uniqueName(`${name}_${seen[name]++}`)
         } else {
