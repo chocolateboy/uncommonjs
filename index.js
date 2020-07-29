@@ -10,10 +10,8 @@
 
     // a helper function used to translate a requested name into a unique name
     const uniqueName = function (name) {
-        if (name in seen) {
-            const count = seen[name]
-            seen[name] = count + 1
-            return uniqueName(`${name}_${count}`)
+        if (seen[name]) {
+            return uniqueName(`${name}_${seen[name]++}`)
         } else {
             seen[name] = 1
             return name
