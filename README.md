@@ -37,7 +37,7 @@ UnCommonJS - a minimum viable shim for `module.exports`
 - `module.exports`
 - `exports`
 - `require` (just for diagnostics - raises an exception if called)
-- tiny (~600 B minified)
+- tiny (&lt; 700 B minified)
 - no dependencies
 - suitable for userscripts
 
@@ -167,9 +167,10 @@ module.exports.bar = function () { ... }
 `exports` is an alias for `module.exports`, so named assignments to `exports`
 are identical to named assignments to `module.exports`.
 
-The first time a named export is assigned, it is given the specified name. If
-subsequent assignments are made with the same name, they are assigned unique
-names by appending numeric suffixes, e.g.: `foo`, `foo_1`, `foo_2` etc.
+The first time a named export is assigned, it is given the specified name.
+Assignments to the same name with the same value are ignored. If different
+values are assigned to the same name, they are assigned unique names by
+appending numeric suffixes, e.g.: `foo`, `foo_1`, `foo_2` etc.
 
 In addition to named exports, default exports can be assigned directly to
 `module.exports`. Note: unlike named exports, which can be assigned to
@@ -189,8 +190,9 @@ module.exports.foo = function foo () { }
 ```
 
 If the assigned value is an anonymous function or a non-function, it is
-assigned the name `default`. As with named exports, duplicate default exports
-are assigned distinct names by appending a numeric suffix, e.g. `default`,
+assigned the name `default`. As with named exports, default exports with the
+same value are ignored and default assignments with different values are
+assigned distinct names by appending a numeric suffix, e.g. `default`,
 `default_1`, `default_2` etc.
 
 If a plain object is assigned to `module.exports`, its properties are assigned

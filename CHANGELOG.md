@@ -1,3 +1,9 @@
+**0.3.0** - TBD
+
+- don't dedup the names of duplicate assignments, e.g.:
+  `exports.foo = foo && exports.foo = foo`
+- fix assignment to generated names, e.g. assigning to `foo_1`
+
 **0.2.0** - 2020-05-02
 
 - add `module.exported`, a read-only view of the exports without the

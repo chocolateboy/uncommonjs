@@ -24,58 +24,126 @@ test.afterEach(t => {
     t.deepEqual(module.exports, exports, 'module.exports matches exports')
 })
 
-test('single export', t => {
+test('single explicitly named export', t => {
     module.exports.foo = foo
     t.deepEqual(module.exports, { foo })
+})
+
+test('single implicitly named export', t => {
+    module.exports = foo
+    t.deepEqual(module.exports, { foo })
+})
+
+test('single anonymous named export', t => {
+    module.exports = 42
+    t.deepEqual(module.exports, { default: 42 })
+})
+
+test('duplicate named exports', t => {
+    module.exports.foo = foo
+    module.exports.foo = foo
+    module.exports = bar
+    module.exports = bar
+    module.exports.baz = baz
+    module.exports = baz
+
+    t.deepEqual(module.exports, { foo, bar, baz })
+})
+
+test('duplicate anonymous exports', t => {
+    module.exports.foo = 42
+    module.exports.foo = 42
+    module.exports = 'quux'
+    module.exports = 'quux'
+
+    t.deepEqual(module.exports, { foo: 42, default: 'quux' })
 })
 
 test('multiple named exports (different names)', t => {
     module.exports.foo = foo
     module.exports.bar = bar
+
     t.deepEqual(module.exports, { foo, bar })
 })
 
-test('multiple named exports (same name)', t => {
+test('multiple named exports (same name, different value)', t => {
     module.exports.foo = foo
     module.exports.foo = bar
+
     t.deepEqual(module.exports, { foo: foo, foo_1: bar })
 })
 
 test('multiple default exports (anonymous functions)', t => {
     // it's quite hard to refer to an anonymous function in ES6 without
-    // accidentally naming it
-    const anon = [() => {}]
+    // accidentally assigning it a name
+    const anon = [() => {}, () => {}]
+
     module.exports = anon[0]
-    module.exports = anon[0]
-    t.deepEqual(module.exports, { default: anon[0], default_1: anon[0] })
+    module.exports = anon[1]
+
+    t.deepEqual(module.exports, { default: anon[0], default_1: anon[1] })
 })
 
-test('multiple default exports (anonymous non-functions)', t => {
-    const anon = ['foo', 42]
-    module.exports = anon
-    module.exports = anon
-    t.deepEqual(module.exports, { default: anon, default_1: anon })
+test('multiple default exports (non-functions)', t => {
+    module.exports = 'foo'
+    module.exports = 42
+
+    t.deepEqual(module.exports, { default: 'foo', default_1: 42 })
 })
 
 test('multiple default exports (named functions)', t => {
     module.exports = foo
     module.exports = bar
+
     t.deepEqual(module.exports, { foo, bar })
 })
 
 test('multiple default exports (named properties)', t => {
-    const props = { foo, bar }
+    const props1 = { foo, bar }
+    const props2 = { foo, bar }
 
-    module.exports = props
-    module.exports = props
+    module.exports = props1
+    module.exports = props2
 
     t.deepEqual(module.exports, {
         foo,
         bar,
-        default: props,
-        foo_1: foo,
-        bar_1: bar,
-        default_1: props,
+        default: props1,
+        default_1: props2,
+    })
+})
+
+test('duplicate a generated name', t => {
+    function bar_1 () {}
+
+    module.exports.foo = 1        // foo
+    module.exports.foo = 2        // foo_1
+    module.exports.foo_1 = 3      // foo_1_1
+    module.exports.foo_1_1 = 4    // foo_1_1_1
+    module.exports.foo_1_1 = 5    // foo_1_1_2
+    module.exports.foo_1_1 = 6    // foo_1_1_3
+    module.exports = 7            // default
+    module.exports = 8            // default_1
+    module.exports.default_1 = 9  // default_1_1
+    module.exports.default_1 = 10 // default_1_2
+    module.exports.bar = 11       // bar
+    module.exports = bar          // bar_1
+    module.exports = bar_1        // bar_1_1
+
+    t.deepEqual(module.exports, {
+        foo:         1,
+        foo_1:       2,
+        foo_1_1:     3,
+        foo_1_1_1:   4,
+        foo_1_1_2:   5,
+        foo_1_1_3:   6,
+        default:     7,
+        default_1:   8,
+        default_1_1: 9,
+        default_1_2: 10,
+        bar:         11,
+        bar_1:       bar,
+        bar_1_1:     bar_1,
     })
 })
 
@@ -84,7 +152,7 @@ test('module.exported', t => {
     module.exports = bar
 
     // module.exported !== module.exports
-    t.not (module.exported, module.exports)
+    t.not(module.exported, module.exports)
 
     // module.exported is immutable
     module.exported.baz = baz

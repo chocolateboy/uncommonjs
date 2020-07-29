@@ -1,24 +1,38 @@
 (function () {
+    // the underlying dictionary
     const $exported = {}
-    const names = {}
+
+    // a name -> count map used to deduplicate names
+    const seen = {}
+
+    // used to identify plain objects
     const toString = {}.toString
 
+    // a helper function used to translate a requested name into a unique name
     const uniqueName = function (name) {
-        let nextIndex = names[name]
-
-        if (nextIndex) {
-            names[name] += 1
-            return `${name}_${nextIndex}`
+        if (name in seen) {
+            const count = seen[name]
+            seen[name] = count + 1
+            return uniqueName(`${name}_${count}`)
         } else {
-            names[name] = 1
+            seen[name] = 1
             return name
         }
     }
 
     const $exports = new Proxy($exported, {
         set (target, name, value) {
-            const key = (typeof name === 'symbol') ? name : uniqueName(String(name))
-            target[key] = value
+            if (typeof name !== 'symbol') {
+                name = String(name)
+
+                if ((name in target) && (target[name] === value)) {
+                    return
+                } else {
+                    name = uniqueName(name)
+                }
+            }
+
+            target[name] = value
         }
     })
 
