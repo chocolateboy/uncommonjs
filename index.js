@@ -20,14 +20,11 @@
 
     const $exports = new Proxy($exported, {
         set (target, name, value) {
-            if (typeof name !== 'symbol') {
-                name = String(name)
-
-                if ((name in target) && (target[name] === value)) {
-                    return
-                } else {
-                    name = uniqueName(name)
-                }
+            // name is either a symbol or (has been coerced to) a string
+            if ((name in target) && (target[name] === value)) {
+                return
+            } else if (typeof name !== 'symbol') {
+                name = uniqueName(name)
             }
 
             target[name] = value
