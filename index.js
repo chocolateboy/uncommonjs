@@ -72,11 +72,9 @@
                 }
             }
 
-            let key = 'default'
-
-            if (typeof value === 'function') {
-                key = value.name || key
-            }
+            const key = (typeof value === 'function' && value.name)
+                ? value.name
+                : 'default'
 
             $exports[key] = value
         },
@@ -109,4 +107,4 @@
             globalThis.require = $require
         }
     }
-})()
+})();

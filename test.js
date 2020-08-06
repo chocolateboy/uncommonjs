@@ -36,7 +36,7 @@ test('single implicitly named export', t => {
     t.deepEqual(module.exports, { foo })
 })
 
-test('single anonymous named export', t => {
+test('single anonymous export', t => {
     module.exports = 42
     t.deepEqual(module.exports, { default: 42 })
 })
@@ -68,7 +68,7 @@ test('multiple named exports (different names)', t => {
     t.deepEqual(module.exports, { foo, bar })
 })
 
-test('multiple named exports (same name, different value)', t => {
+test('multiple named exports (same name, different values)', t => {
     module.exports.foo = foo
     module.exports.foo = bar
 
@@ -115,7 +115,7 @@ test('multiple default exports (named properties)', t => {
     })
 })
 
-test('duplicate a generated name', t => {
+test('assign to generated names', t => {
     function bar_1 () {}
 
     module.exports.foo = 1        // foo
