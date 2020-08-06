@@ -8,6 +8,11 @@
     // used to identify plain objects
     const toString = {}.toString
 
+    // stub require implementation (for diagnostic purposes)
+    const $require = function require (id) {
+        throw new Error(`can't require ${id}: require is not implemented`)
+    }
+
     // a helper function used to translate a requested name into a unique name
     const uniqueName = name => {
         if (seen[name]) {
@@ -21,13 +26,23 @@
     const $exports = new Proxy($exported, {
         set (target, name, value) {
             // name is either a symbol or (has been coerced to) a string
-            if ((name in target) && (target[name] === value)) {
-                return
-            } else if (typeof name !== 'symbol') {
-                name = uniqueName(name)
+            if (!(name in target) || (target[name] !== value)) {
+                if (typeof name !== 'symbol') {
+                    name = uniqueName(name)
+                }
+
+                target[name] = value
             }
 
-            target[name] = value
+            // NOTE the `set` trap must return true:
+            //
+            //   > The set method should return a boolean value. Return true to
+            //   > indicate that assignment succeeded. If the set method returns
+            //   > false, and the assignment happened in strict-mode code, a
+            //   > TypeError will be > thrown.
+            //
+            // -- https://mzl.la/2XR09L9
+            return true
         }
     })
 
@@ -67,19 +82,31 @@
         },
     }
 
-    const $require = function require (id) {
-        throw new Error(`can't require ${id}: require is not implemented`)
-    }
-
+    // by default, assign these as undeclared variables; this works in
+    // non-strict mode and is needed by the test.
+    //
+    // if that fails, assign to globalThis
     if (typeof exports === 'undefined') {
-        exports = $exports
+        try {
+            exports = $exports
+        } catch (e) {
+            globalThis.exports = $exports
+        }
     }
 
     if (typeof module === 'undefined') {
-        module = $module
+        try {
+            module = $module
+        } catch (e) {
+            globalThis.module = $module
+        }
     }
 
     if (typeof require === 'undefined') {
-        require = $require
+        try {
+            require = $require
+        } catch (e) {
+            globalThis.require = $require
+        }
     }
 })()

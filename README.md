@@ -38,7 +38,7 @@ UnCommonJS - a minimum viable shim for `module.exports`
 - `module.exports`
 - `exports`
 - `require` (just for diagnostics - raises an exception if called)
-- tiny (~600 B minified)
+- tiny (~700 B minified)
 - no dependencies
 - suitable for userscripts
 
@@ -285,6 +285,9 @@ The following NPM scripts are available:
 # COMPATIBILITY
 
 - any environment with [ES6 Proxy support](https://caniuse.com/#feat=proxy)
+- in strict mode, globals are assigned to
+  [`globalThis`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis),
+  which may need to be polyfilled
 
 # SEE ALSO
 

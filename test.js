@@ -1,3 +1,5 @@
+"use strict"; // trigger the Proxy#set check
+
 const test = require('ava')
 const Fs   = require('fs')
 
