@@ -12,12 +12,13 @@
 - [DESCRIPTION](#description)
   - [Why?](#why)
   - [Why not?](#why-not)
-  - [Caveats](#caveats)
 - [GLOBALS](#globals)
   - [exports](#exports)
   - [module.exported](#moduleexported)
   - [module.exports](#moduleexports)
   - [require](#require)
+- [CAVEATS](#caveats)
+  - [Scope](#scope)
 - [DEVELOPMENT](#development)
   - [NPM Scripts](#npm-scripts)
 - [COMPATIBILITY](#compatibility)
@@ -115,16 +116,6 @@ This is a hack to get CommonJS modules working in constrained environments such
 as userscripts when no other option is available. It shouldn't be used in
 situations or environments where sane solutions are available.
 
-## Caveats
-
-- `require` is defined but not supported (it throws an exception): check the
-  required modules to ensure they don't use it
-- `__filename` and `__dirname` are not supported
-- pin the versions of the required modules to avoid being caught out if they
-  update their dependencies
-- load UMD bundles **before** this shim, otherwise it will mislead them into
-  thinking it's a real CommonJS environment
-
 # GLOBALS
 
 When this shim is loaded, the following variables are defined if they're not
@@ -216,6 +207,66 @@ module.exports.default = props
 
 This is defined as a function purely for diagnostic purposes. When called, it
 raises an exception which includes the name of the required module.
+
+# CAVEATS
+
+- `require` is defined but not supported (it throws an exception): check the
+  required modules to ensure they don't use it
+- `__filename` and `__dirname` are not supported
+- pin the versions of the required modules to avoid being caught out if they
+  update their dependencies
+- load UMD bundles **before** this shim, otherwise it will mislead them into
+  thinking it's a real CommonJS environment
+
+## Scope
+
+Care may need to be taken when extracting values from the `exports` object into
+variables if a CommonJS module (also) defines those variables at its top
+level, e.g.:
+
+```javascript
+function foo () { ... }
+
+module.exports = foo
+```
+
+For example, while most userscript engines execute userscripts in a (nested)
+scope distinct from that of the `@require`s, at least one popular engine
+doesn't. This means that the following won't work portably:
+
+```javascript
+// ==UserScript==
+// @name          Non-Portable Userscript
+// @include       *
+// @require       https://unpkg.com/@chocolateboy/uncommonjs@0.3.1
+// @require       https://cdn.jsdelivr.net/npm/just-safe-get@2.0.0
+// ==/UserScript==
+
+const { get } = exports // SyntaxError
+
+get(obj, path)
+```
+
+Because the userscript is evaluated in the same scope as the CommonJS module,
+the name is already defined and the declaration results in an error:
+
+    Uncaught SyntaxError: redeclaration of function `get`
+
+The same issue can occur in other contexts, e.g. if the shim is being used on a
+webpage.
+
+The solution is to wrap the code (or the parts of the code which assign
+properties of `exports` to local variables) in a
+[block](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/block)
+or [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE), e.g.:
+
+```javascript
+(function () {
+    const { get } = exports // OK
+
+    get(obj, path)
+})()
+```
 
 # DEVELOPMENT
 
