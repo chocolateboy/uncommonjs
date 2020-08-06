@@ -1,3 +1,12 @@
+### 0.3.2 - 2020-08-06
+
+- portability fixes
+  - return true from the Proxy#set trap as required by the spec
+  - catch the ReferenceError when assigning undeclared variables in strict
+    mode and fall back to `globalThis`
+- add a caveat about scoping/portability (thanks,
+  [darkred](https://github.com/chocolateboy/userscripts/issues/11))
+
 ### 0.3.1 - 2020-07-29
 
 - reduce the size of the minified build

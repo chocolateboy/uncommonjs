@@ -1,6 +1,6 @@
 {
     "name": "@chocolateboy/uncommonjs",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "description": "A minimum viable shim for module.exports",
     "unpkg": "index.min.js",
     "jsdelivr": "index.min.js",
