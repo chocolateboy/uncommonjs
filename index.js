@@ -5,12 +5,12 @@
     // a name -> count map used to deduplicate names
     const seen = {}
 
-    // used to identify plain objects
+    // a helper function used to identify plain objects
     const toString = {}.toString
 
     // stub require implementation (for diagnostic purposes)
     const $require = function require (id) {
-        throw new Error(`can't require ${id}: require is not implemented`)
+        throw new Error(`Can't require ${id}: require is not implemented`)
     }
 
     // a helper function used to translate a requested name into a unique name
@@ -20,6 +20,19 @@
         } else {
             seen[name] = 1
             return name
+        }
+    }
+
+    /*
+     * factor out some common code/constants to reduce the minified file size
+     */
+    const UNDEFINED = 'undefined'
+
+    const assignRequire = fn => {
+        try {
+            require = fn
+        } catch (e) {
+            globalThis.require = fn
         }
     }
 
@@ -62,29 +75,32 @@
             if (toString.call(value) === '[object Object]') {
                 // since this is a convenience and the full object is still
                 // available as a fallback, we can afford to be strict in what
-                // we support/export here, namely: a) only string keys (i.e. not
+                // we support/export here, namely a) only string keys (i.e. not
                 // symbols) and b) only (own) enumerable properties
-                const keys = Object.keys(value)
 
-                for (let i = 0; i < keys.length; ++i) {
-                    const key = keys[i]
+                for (const key of Object.keys(value)) {
                     $exports[key] = value[key]
                 }
             }
 
-            const key = (typeof value === 'function' && value.name)
+            const key = ((typeof value === 'function') && value.name)
                 ? value.name
                 : 'default'
 
             $exports[key] = value
         },
+
+        // write only
+        set require (fn) {
+            assignRequire(fn)
+        }
     }
 
     // by default, assign these as undeclared variables; this works in
     // non-strict mode and is needed by the test.
     //
     // if that fails, assign to globalThis
-    if (typeof exports === 'undefined') {
+    if (typeof exports === UNDEFINED) {
         try {
             exports = $exports
         } catch (e) {
@@ -92,7 +108,7 @@
         }
     }
 
-    if (typeof module === 'undefined') {
+    if (typeof module === UNDEFINED) {
         try {
             module = $module
         } catch (e) {
@@ -100,11 +116,7 @@
         }
     }
 
-    if (typeof require === 'undefined') {
-        try {
-            require = $require
-        } catch (e) {
-            globalThis.require = $require
-        }
+    if (typeof require === UNDEFINED) {
+        assignRequire($require)
     }
 })();

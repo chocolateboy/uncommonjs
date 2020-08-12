@@ -1,3 +1,7 @@
+### 1.0.0 - TBD
+
+- add `require` hook (`module.require`)
+
 ### 0.3.2 - 2020-08-06
 
 - portability fixes

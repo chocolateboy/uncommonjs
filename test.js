@@ -173,3 +173,15 @@ test('require', t => {
     // require is not implemented
     t.throws(() => require('fs'), { message: /not implemented/ })
 })
+
+test('module.require', t => {
+    const $require = id => ({ required: id })
+
+    // write only
+    t.is(module.require, undefined)
+    module.require = $require
+    t.is(module.require, undefined)
+
+    t.is(require, $require)
+    t.deepEqual(require('left-pad'), { required: 'left-pad' })
+})

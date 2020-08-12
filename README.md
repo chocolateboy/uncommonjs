@@ -16,6 +16,7 @@
   - [exports](#exports)
   - [module.exported](#moduleexported)
   - [module.exports](#moduleexports)
+  - [module.require](#modulerequire)
   - [require](#require)
 - [CAVEATS](#caveats)
   - [Scope](#scope)
@@ -37,7 +38,7 @@ UnCommonJS - a minimum viable shim for `module.exports`
 
 - `module.exports`
 - `exports`
-- `require` (just for diagnostics - raises an exception if called)
+- pluggable `require`
 - tiny (~700 B minified)
 - no dependencies
 - suitable for userscripts
@@ -118,8 +119,8 @@ situations or environments where sane solutions are available.
 
 # GLOBALS
 
-When this shim is loaded, the following variables are defined if they're not
-defined already. Unless noted, they should have the same behavior as the
+When this shim is loaded, the following global variables are defined if they're
+not defined already. Unless noted, they should have the same behavior as the
 corresponding values in Node.js and other CommonJS environments.
 
 ## exports
@@ -203,19 +204,41 @@ module.exports.bar = bar
 module.exports.default = props
 ```
 
+## module.require
+
+A write-only property which can be assigned a replacement for the default
+[`require`](#require) implementation.
+
+```javascript
+const mods = {
+    'is-even':     (value => value % 2 === 0),
+    'is-odd':      (value => value % 2 === 1),
+    'is-thirteen': (value => value === 13),
+}
+
+module.require = id => {
+    return mods[id] || throw new Error(...)
+}
+```
+
 ## require
 
-This is defined as a function purely for diagnostic purposes. When called, it
-raises an exception which includes the name of the required module.
+A function which takes a module ID (string) and returns the value exported by
+the module.
+
+The default implementation is a stub which raises an exception which includes
+the name of the required module. Can be overridden by assigning to
+[`module.require`](#modulerequire).
 
 # CAVEATS
 
-- `require` is defined but not supported (it throws an exception): check the
-  required modules to ensure they don't use it
+- By default, `require` is defined but not implemented (it throws an
+  exception): check the required modules to ensure they don't use it
 - `__filename` and `__dirname` are not supported
 - pin the versions of the required modules to avoid being caught out if they
   update their dependencies
-- load UMD bundles **before** this shim, otherwise it will mislead them into
+- Unless a compatible [`require`](#require) has been [defined](#modulerequire),
+  load UMD bundles **before** this shim, otherwise it will mislead them into
   thinking it's a real CommonJS environment
 
 ## Scope
