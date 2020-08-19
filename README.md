@@ -227,7 +227,7 @@ A function which takes a module ID (string) and returns the value exported by
 the module.
 
 The default implementation is a stub which raises an exception which includes
-the name of the required module. Can be overridden by assigning to
+the name of the required module. It can be overridden by assigning to
 [`module.require`](#modulerequire).
 
 # CAVEATS
@@ -238,8 +238,8 @@ the name of the required module. Can be overridden by assigning to
 - pin the versions of the required modules to avoid being caught out if they
   update their dependencies
 - Unless a compatible [`require`](#require) has been [defined](#modulerequire),
-  load UMD bundles **before** this shim, otherwise it will mislead them into
-  thinking it's a real CommonJS environment
+  load UMD bundles which use `require` **before** this shim, otherwise it will
+  mislead them into thinking it's a real CommonJS environment
 
 ## Scope
 
@@ -279,9 +279,9 @@ The same issue can occur in other contexts, e.g. if the shim is being used on a
 webpage.
 
 The solution is to wrap the code (or the parts of the code which assign
-properties of `exports` to local variables) in a
+properties of `exports` to local variables) in a nested scope, e.g. a
 [block](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/block)
-or [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE), e.g.:
+or [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE):
 
 ```javascript
 (function () {
@@ -289,6 +289,13 @@ or [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE), e.g.:
 
     get(obj, path)
 })()
+```
+
+Alternatively, for one-off uses, it may be simpler to access the export by its
+qualified name, e.g.:
+
+```javascript
+exports.get(obj, path) // OK
 ```
 
 # DEVELOPMENT

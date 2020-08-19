@@ -1,3 +1,7 @@
+### 1.0.1 - TBD
+
+- documentation tweaks
+
 ### 1.0.0 - 2020-08-12
 
 - add `require` hook (`module.require`)
