@@ -19,9 +19,9 @@
         "index.min.js"
     ],
     "devDependencies": {
-        "ava": "^3.11.1",
+        "ava": "^3.12.1",
         "npm-run-all": "^4.1.5",
-        "terser": "^5.0.0"
+        "terser": "^5.2.1"
     },
     "keywords": [
         "adapter",
