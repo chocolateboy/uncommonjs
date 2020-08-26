@@ -1,4 +1,4 @@
-## 2.0.1 - TBD
+## 2.0.1 - 2020-08-26
 
 - remove redundant/duplicate backing store
 
