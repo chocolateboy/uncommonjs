@@ -39,7 +39,7 @@ UnCommonJS - a minimum viable shim for `module.exports`
 - `module.exports`
 - `exports`
 - pluggable `require`
-- tiny (~ 800 B minified)
+- tiny (&lt; 800 B minified)
 - no dependencies
 - suitable for userscripts
 

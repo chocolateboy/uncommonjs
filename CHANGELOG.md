@@ -1,3 +1,7 @@
+## 2.0.1 - TBD
+
+- remove redundant/duplicate backing store
+
 ## 2.0.0 - 2020-08-26
 
 #### Breaking Change

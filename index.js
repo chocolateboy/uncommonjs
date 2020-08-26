@@ -10,35 +10,19 @@
         throw new Error(`Can't require ${id}: require is not implemented`)
     }
 
-    // a cache which maps a requested name (e.g. "foo") to the value assigned to
-    // that name. e.g. given the following assignments:
-    //
-    //   exports.foo = 1 // foo
-    //   exports.foo = 2 // foo_1
-    //   exports.foo = 3 // foo_2
-    //
-    // the cache would contain:
-    //
-    //   Map {
-    //       "foo"   => 1,
-    //       "foo_1" => 2,
-    //       "foo_2" => 3,
-    //   }
-    //
-    const seen = new Map()
-
-    // a helper function used to translate a requested name into a unique name
-    const uniqueName = (name, value) => {
+    // translate the requested name into a unique name and assign the supplied
+    // value to it if it doesn't already exist
+    const assign = (name, value) => {
         for (let i = 0; ; ++i) {
             const candidate = i === 0 ? name : `${name}_${i}`
 
-            if (seen.has(candidate)) {
-                if (seen.get(candidate) === value) {
-                    return null
+            if (candidate in $exported) {
+                if ($exported[candidate] === value) {
+                    break
                 }
             } else {
-                seen.set(candidate, value)
-                return candidate
+                $exported[candidate] = value
+                break
             }
         }
     }
@@ -55,15 +39,13 @@
     }
 
     const $exports = new Proxy($exported, {
-        set (target, name, value) {
+        set (_target, name, value) {
             // name is either a symbol or (has been coerced to) a string
 
-            const key = typeof name === 'symbol'
-                ? name
-                : (name && uniqueName(name, value))
-
-            if (key) {
-                target[key] = value
+            if (typeof name === 'symbol') {
+                $exported[name] = value
+            } else if (name) {
+                assign(name, value)
             }
 
             // NOTE the `set` trap must return true:
