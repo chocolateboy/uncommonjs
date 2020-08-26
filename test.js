@@ -14,7 +14,7 @@ test.beforeEach(t => {
     t.is(exports, undefined)
     t.is(require, undefined)
 
-    const src = Fs.readFileSync('./index.js', 'utf8')
+    const src = Fs.readFileSync('./index.min.js', 'utf8')
 
     eval(src)
 })
@@ -147,6 +147,44 @@ test('assign to generated names', t => {
         bar_1:       bar,
         bar_1_1:     bar_1,
     })
+})
+
+test('preempt generated names', t => {
+    module.exports.foo_1 = 1   // foo_1
+    module.exports.foo_1_1 = 2 // foo_1_1
+    module.exports.foo = 3     // foo
+    module.exports.foo = 4     // foo_1_1_1
+    module.exports.foo_1 = 5   // foo_1_2
+    module.exports.foo_1_1 = 6 // foo_1_1_2
+    module.exports.foo = 7     // foo_2
+    module.exports.foo = 8     // foo_3
+
+    t.deepEqual(module.exports, {
+        foo_1:     1,
+        foo_1_1:   2,
+        foo:       3,
+        foo_1_1_1: 4,
+        foo_1_2:   5,
+        foo_1_1_2: 6,
+        foo_2:     7,
+        foo_3:     8,
+    })
+})
+
+test('duplicate assignments', t => {
+    module.exports.foo = 1 // foo
+    module.exports.foo = 2 // foo_1
+    module.exports.foo = 3 // foo_2
+    module.exports.foo = 1 // foo
+    module.exports.foo = 2 // foo_1
+    module.exports.foo = 3 // foo_2
+
+    module.exports.foo_1 = 2 // no change
+    module.exports.foo_2 = 3 // no change
+    module.exports.foo_1 = 2 // no change
+    module.exports.foo_2 = 3 // no change
+
+    t.deepEqual(module.exports, { foo: 1, foo_1: 2, foo_2: 3 })
 })
 
 test('module.exported', t => {
