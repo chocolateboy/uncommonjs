@@ -2,24 +2,6 @@
     // the underlying dictionary
     const $exported = {}
 
-    // maps a requested name (e.g. "foo") to a set of the unique values assigned
-    // with that name. e.g. given the following assignments:
-    //
-    //   exports.foo = 1 // foo
-    //   exports.foo = 2 // foo_1
-    //   exports.foo = 3 // foo_2
-    //
-    // this object would contain:
-    //
-    //   {
-    //       foo:   Set { 1, 2, 3 },
-    //       foo_1: Set { 2 },
-    //       foo_2: Set { 3 },
-    //   }
-    //
-    // this also doubles as a counter for the number of aliases for a name
-    const seen = {}
-
     // a helper function used to identify plain objects
     const toString = {}.toString
 
@@ -28,47 +10,37 @@
         throw new Error(`Can't require ${id}: require is not implemented`)
     }
 
-    // a WeakSet with support for non-object values
-    const InterSet = class {
-        constructor () {
-            this._values = this._objects = null
-            this._size = 0
-        }
-
-        add (value) {
-            this._target(value).add(value)
-            ++this._size
-            return this
-        }
-
-        has (value) {
-            return this._target(value).has(value)
-        }
-
-        get size () {
-            return this._size
-        }
-
-        _target (value) {
-            if (Object(value) === value) {
-                return this._objects || (this._objects = new WeakSet())
-            } else {
-                return this._values || (this._values = new Set())
-            }
-        }
-    }
+    // a cache which maps a requested name (e.g. "foo") to the value assigned to
+    // that name. e.g. given the following assignments:
+    //
+    //   exports.foo = 1 // foo
+    //   exports.foo = 2 // foo_1
+    //   exports.foo = 3 // foo_2
+    //
+    // the cache would contain:
+    //
+    //   Map {
+    //       "foo"   => 1,
+    //       "foo_1" => 2,
+    //       "foo_2" => 3,
+    //   }
+    //
+    const seen = new Map()
 
     // a helper function used to translate a requested name into a unique name
     const uniqueName = (name, value) => {
-        const values = seen[name] || (seen[name] = new InterSet())
-        const { size } = values
+        for (let i = 0; ; ++i) {
+            const candidate = i === 0 ? name : `${name}_${i}`
 
-        if (values.has(value)) {
-            return null
+            if (seen.has(candidate)) {
+                if (seen.get(candidate) === value) {
+                    return null
+                }
+            } else {
+                seen.set(candidate, value)
+                return candidate
+            }
         }
-
-        values.add(value)
-        return size ? uniqueName(`${name}_${size}`, value) : name
     }
 
     // factor out some common code/constants to reduce the minified file size

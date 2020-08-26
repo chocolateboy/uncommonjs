@@ -9,10 +9,11 @@
     "author": "chocolateboy",
     "license": "Artistic-2.0",
     "scripts": {
-        "build": "terser --compress passes=2,reduce_vars=false,keep_fnames=true --mangle reserved=['require'] --mangle-props reserved=['exports','exported','module','require'] -o index.min.js < index.js",
+        "build": "terser --compress passes=2,reduce_vars=false,keep_fnames=true --mangle reserved=['require'] -o index.min.js < index.js",
         "doctoc": "markdown-toc --bullets=- -i README.md",
-        "prepublishOnly": "run-s doctoc build test",
-        "test": "ava --verbose --serial test.js"
+        "prepublishOnly": "run-s doctoc test",
+        "test": "run-s build test:run",
+        "test:run": "ava --verbose --serial test.js"
     },
     "files": [
         "index.js",

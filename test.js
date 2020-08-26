@@ -149,25 +149,29 @@ test('assign to generated names', t => {
     })
 })
 
-test('preempt generated names', t => {
+test('pre-empt generated names', t => {
     module.exports.foo_1 = 1   // foo_1
-    module.exports.foo_1_1 = 2 // foo_1_1
+    module.exports.foo_2 = 2   // foo_2
     module.exports.foo = 3     // foo
-    module.exports.foo = 4     // foo_1_1_1
-    module.exports.foo_1 = 5   // foo_1_2
-    module.exports.foo_1_1 = 6 // foo_1_1_2
-    module.exports.foo = 7     // foo_2
-    module.exports.foo = 8     // foo_3
+    module.exports.foo = 4     // foo_3
+    module.exports.foo_1 = 5   // foo_1_1
+    module.exports.foo_2 = 6   // foo_2_1
+    module.exports.foo_1 = 7   // foo_1_2
+    module.exports.foo_2 = 8   // foo_2_2
+    module.exports.foo = 9     // foo_4
+    module.exports.foo = 10    // foo_5
 
     t.deepEqual(module.exports, {
-        foo_1:     1,
-        foo_1_1:   2,
-        foo:       3,
-        foo_1_1_1: 4,
-        foo_1_2:   5,
-        foo_1_1_2: 6,
-        foo_2:     7,
-        foo_3:     8,
+        foo_1:   1,
+        foo_2:   2,
+        foo:     3,
+        foo_3:   4,
+        foo_1_1: 5,
+        foo_2_1: 6,
+        foo_1_2: 7,
+        foo_2_2: 8,
+        foo_4:   9,
+        foo_5:   10,
     })
 })
 

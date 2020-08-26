@@ -6,6 +6,10 @@
   features may be used (bumped the major version in case anyone was relying on
   partial support and a polyfill)
 
+#### Features
+
+- generate cleaner (flatter) names
+
 #### Fixes
 
 - improve detection of duplicate assignments
