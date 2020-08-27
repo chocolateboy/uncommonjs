@@ -323,7 +323,8 @@ The following NPM scripts are available:
 
 - [GreasyFork Libraries](https://greasyfork.org/scripts/libraries)
 - [Observable - How to require stubborn modules](https://observablehq.com/@observablehq/how-to-require-stubborn-modules)
-- [packd](https://github.com/Rich-Harris/packd) - a [web service](https://bundle.run/) which converts CommonJS modules to UMD
+- [packd](https://github.com/Rich-Harris/packd) - a [web service](https://bundle.run/) which converts NPM packages to UMD bundles
+- [REPKG](https://github.com/privatenumber/repkg) - a [web service](https://repkg.now.sh/) which converts NPM packages to UMD bundles
 
 # VERSION
 
