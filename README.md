@@ -74,8 +74,8 @@ UnCommonJS is a tiny library which exposes a `module.exports` global (and
 gather exports in environments which don't otherwise support CommonJS.
 
 Names are deduplicated, so that e.g. if multiple modules export the same name
-or assign multiple values to `module.exports` (i.e. multiple default exports),
-each export is given a distinct name.
+or assign multiple values to `module.exports`, each export is given a distinct
+name.
 
 This shim is useful in very constrained environments in which it's not possible
 (usually for political or policy reasons) to use transpilers or bundlers to

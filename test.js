@@ -53,12 +53,12 @@ test('duplicate named exports', t => {
 })
 
 test('duplicate anonymous exports', t => {
-    module.exports.foo = 42
-    module.exports.foo = 42
-    module.exports = 'quux'
-    module.exports = 'quux'
+    module.exports = 42
+    module.exports = 42
+    module.exports = 'foo'
+    module.exports = 'foo'
 
-    t.deepEqual(module.exports, { foo: 42, default: 'quux' })
+    t.deepEqual(module.exports, { default: 42, default_1: 'foo' })
 })
 
 test('multiple named exports (different names)', t => {
@@ -226,4 +226,5 @@ test('module.require', t => {
 
     t.is(require, $require)
     t.deepEqual(require('left-pad'), { required: 'left-pad' })
+    t.deepEqual(require('is-thirteen'), { required: 'is-thirteen' })
 })
