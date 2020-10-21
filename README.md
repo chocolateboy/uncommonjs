@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/chocolateboy/uncommonjs.svg)](https://travis-ci.org/chocolateboy/uncommonjs)
 [![NPM Version](https://img.shields.io/npm/v/@chocolateboy/uncommonjs.svg)](https://www.npmjs.org/package/@chocolateboy/uncommonjs)
 
-<!-- toc -->
+<!-- TOC -->
 
 - [NAME](#name)
 - [FEATURES](#features)
@@ -28,7 +28,7 @@
 - [AUTHOR](#author)
 - [COPYRIGHT AND LICENSE](#copyright-and-license)
 
-<!-- tocstop -->
+<!-- TOC END -->
 
 # NAME
 
@@ -307,7 +307,7 @@ exports.get(obj, path) // OK
 The following NPM scripts are available:
 
 - build - generate the minified build of the library (index.min.js)
-- doctoc - update the table-of-contents (TOC) in the README
+- build:doc - update the table-of-contents (TOC) in the README
 - test - run the test suite
 
 </details>
