@@ -1,3 +1,8 @@
+## 2.0.2 - TBD
+
+- update build dependencies
+- documentation tweaks
+
 ## 2.0.1 - 2020-08-26
 
 - remove redundant/duplicate backing store

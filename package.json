@@ -1,6 +1,6 @@
 {
     "name": "@chocolateboy/uncommonjs",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "description": "A minimum viable shim for module.exports",
     "unpkg": "index.min.js",
     "jsdelivr": "index.min.js",
@@ -10,7 +10,7 @@
     "license": "Artistic-2.0",
     "scripts": {
         "build": "terser --compress passes=2,reduce_vars=false,keep_fnames=true --mangle reserved=['require'] -o index.min.js < index.js",
-        "build:doc": "toc-md --max-depth 3 README.md",
+        "build:doc": "toc-md README.md",
         "prepublishOnly": "run-s build:doc test",
         "test": "run-s build test:run",
         "test:run": "ava --verbose --serial test.js"
@@ -22,7 +22,7 @@
     "devDependencies": {
         "ava": "^3.13.0",
         "npm-run-all": "^4.1.5",
-        "terser": "^5.3.7",
+        "terser": "^5.3.8",
         "toc-md-alt": "^0.4.1"
     },
     "keywords": [
