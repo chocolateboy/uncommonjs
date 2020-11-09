@@ -1,4 +1,4 @@
-## 2.0.2 - TBD
+## 2.0.2 - 2020-11-06
 
 - update build dependencies
 - documentation tweaks
@@ -11,7 +11,7 @@
 
 #### Breaking Change
 
-- clarify that ES6 support is required, not just ES6 Proxy, since other
+- clarify that ES6 support is required, not just ES6 Proxy support, since other
   features may be used (bumped the major version in case anyone was relying on
   partial support and a polyfill)
 
