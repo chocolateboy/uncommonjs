@@ -1,6 +1,6 @@
 # UnCommonJS
 
-[![Build Status](https://travis-ci.org/chocolateboy/uncommonjs.svg)](https://travis-ci.org/chocolateboy/uncommonjs)
+[![Build Status](https://github.com/chocolateboy/uncommonjs/workflows/test/badge.svg)](https://github.com/chocolateboy/uncommonjs/actions?query=workflow%3Atest)
 [![NPM Version](https://img.shields.io/npm/v/@chocolateboy/uncommonjs.svg)](https://www.npmjs.org/package/@chocolateboy/uncommonjs)
 
 <!-- TOC -->
