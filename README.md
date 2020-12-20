@@ -234,7 +234,7 @@ the name of the required module. It can be overridden by assigning to
 - By default, `require` is defined but not implemented (it throws an
   exception): check the required modules to ensure they don't use it
 - `__filename` and `__dirname` are not supported
-- pin the versions of the required modules to avoid being caught out if they
+- Pin the versions of the required modules to avoid being caught out if they
   update their dependencies
 - Unless a compatible [`require`](#require) has been [defined](#modulerequire),
   load UMD bundles which use `require` **before** this shim, otherwise it will
