@@ -1,3 +1,9 @@
+## 3.0.0 - TBD
+
+- add support for live bindings (e.g. esbuild's CommonJS output)
+- separate the polyfill from the exports
+- migrate source to TypeScript
+
 ## 2.0.2 - 2020-11-06
 
 - update build dependencies

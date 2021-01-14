@@ -12,7 +12,7 @@
 - [DESCRIPTION](#description)
   - [Why?](#why)
   - [Why not?](#why-not)
-- [GLOBALS](#globals)
+- [API](#api)
   - [exports](#exports)
   - [module.exported](#moduleexported)
   - [module.exports](#moduleexports)
@@ -37,8 +37,9 @@ UnCommonJS - a minimum viable shim for `module.exports`
 
 - `module.exports`
 - `exports`
+- supports live exports (ESM emulation)
 - pluggable `require`
-- tiny (&lt; 800 B minified)
+- tiny (~ 700 B minified + gzipped)
 - no dependencies
 - suitable for userscripts
 
@@ -116,11 +117,29 @@ This is a hack to get CommonJS modules working in constrained environments such
 as userscripts when no other option is available. It shouldn't be used in
 situations or environments where sane solutions are available.
 
-# GLOBALS
+# API
 
-When this shim is loaded, the following global variables are defined if they're
-not defined already. Unless noted, they should have the same behavior as the
-corresponding values in Node.js and other CommonJS environments.
+When the polyfill is loaded, `module`, `exports` and `require` are defined as
+global variables if they're not defined already. Unless noted, they should have
+the same behavior as the corresponding values in Node.js and other CommonJS
+environments.
+
+```javascript
+import '@chocolatey/uncommonjs/polyfill'
+
+module.exports = 42
+console.log(module.exported) // { "default": 42 }
+```
+
+The API can be loaded without being automatically registered via the module's
+main file, e.g.:
+
+```javascript
+import cjs from '@chocolatey/uncommonjs'
+
+const env = cjs() // { module: ..., exports: ..., require: ... }
+Object.assign(globalThis, env)
+```
 
 ## exports
 
@@ -205,8 +224,9 @@ module.exports.default = props
 
 ## module.require
 
-A write-only property which can be assigned a replacement for the default
-[`require`](#require) implementation.
+An alias for the [`require`](#require) export. Can be assigned a new `require`
+implementation which is used whenever the exported `require` function is
+called.
 
 ```javascript
 const mods = {
@@ -290,8 +310,8 @@ or [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE):
 })()
 ```
 
-Alternatively, for one-off uses, it may be simpler to access the export by its
-qualified name, e.g.:
+Alternatively, it may be simpler to access the export by its qualified name,
+e.g.:
 
 ```javascript
 exports.get(obj, path) // OK
