@@ -1,4 +1,4 @@
-## 3.0.1 - TBD
+## 3.0.1 - 2021-01-15
 
 - remove unused dev dependency
 
