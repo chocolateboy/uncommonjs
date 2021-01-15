@@ -1,4 +1,4 @@
-## 3.0.0 - TBD
+## 3.0.0 - 2021-01-15
 
 - add support for live bindings (e.g. esbuild's CommonJS output)
 - separate the polyfill from the exports
