@@ -1,3 +1,7 @@
+## 3.0.1 - TBD
+
+- remove unused dev dependency
+
 ## 3.0.0 - 2021-01-15
 
 - add support for live bindings (e.g. esbuild's CommonJS output)

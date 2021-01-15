@@ -41,7 +41,8 @@ UnCommonJS - a minimum viable shim for `module.exports`
 - pluggable `require`
 - tiny (~ 700 B minified + gzipped)
 - no dependencies
-- suitable for userscripts
+- fully typed (TypeScript)
+- CDN builds - [jsDelivr][], [unpkg][]
 
 # INSTALLATION
 
@@ -119,7 +120,7 @@ situations or environments where sane solutions are available.
 
 # API
 
-When the polyfill is loaded, `module`, `exports` and `require` are defined as
+When the shim is loaded, `module`, `exports` and `require` are defined as
 global variables if they're not defined already. Unless noted, they should have
 the same behavior as the corresponding values in Node.js and other CommonJS
 environments.
@@ -361,3 +362,6 @@ Copyright © 2020-2021 by chocolateboy.
 
 This is free software; you can redistribute it and/or modify it under the
 terms of the [Artistic License 2.0](https://www.opensource.org/licenses/artistic-license-2.0.php).
+
+[jsDelivr]: https://cdn.jsdelivr.net/npm/@chocolateboy/uncommonjs
+[unpkg]: https://unpkg.com/@chocolateboy/uncommonjs
