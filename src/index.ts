@@ -1,7 +1,7 @@
 type Exported = Record<string | symbol, PropertyDescriptor>;
 
 export type Exports = Record<PropertyKey, unknown>;
-export type Require = ((id: string) => unknown);
+export type Require = (id: string) => unknown;
 export type Module = {
     readonly exported: Exports;
     require: Require;
@@ -16,6 +16,10 @@ export type Environment = {
     module: Module;
     exports: Exports;
     require: Require;
+};
+
+export type Options = {
+    require?: Require;
 };
 
 // minification helpers
@@ -65,11 +69,13 @@ const assign = (exported: Exported, name: PropertyKey, descriptor: PropertyDescr
     return true
 }
 
-export default (): Environment => {
-    // stub require implementation (for diagnostic purposes)
-    let __require: Require = function require (id: string) {
-        throw new Error(`Can't require ${id}: require is not implemented`)
-    }
+// stub require implementation (for diagnostic purposes)
+const defaultRequire = (id: string) => {
+    throw new Error(`Can't require ${id}: require is not implemented`)
+}
+
+export default (options: Options = {}): Environment => {
+    let _require: Require = options.require || defaultRequire
 
     // the underlying dictionary
     const $exported: Exported = {}
@@ -102,7 +108,7 @@ export default (): Environment => {
         setPrototypeOf: ignore,
     })
 
-    const $require = function require (id: string) { return __require(id) }
+    const $require = function require (id: string) { return _require(id) }
 
     const $module = {
         get exported () {
@@ -146,7 +152,7 @@ export default (): Environment => {
         },
 
         set require (fn: Require) {
-            __require = fn
+            _require = fn
         },
     }
 

@@ -7,22 +7,28 @@ declare global {
     var require: Require;
 };
 
-const $env = env()
+const __globalThis = globalThis
+
+const {
+    module: $module,
+    exports: $exports,
+    require: $require,
+} = env()
 
 try {
-    module ||= $env.module
+    module ||= $module
 } catch (e) {
-    globalThis.module ||= $env.module
+    __globalThis.module ||= $module
 }
 
 try {
-    exports ||= $env.exports
+    exports ||= $exports
 } catch (e) {
-    globalThis.exports ||= $env.exports
+    __globalThis.exports ||= $exports
 }
 
 try {
-    require ||= $env.require
+    require ||= $require
 } catch (e) {
-    globalThis.require ||= $env.require
+    __globalThis.require ||= $require
 }

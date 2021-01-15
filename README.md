@@ -12,12 +12,16 @@
 - [DESCRIPTION](#description)
   - [Why?](#why)
   - [Why not?](#why-not)
-- [API](#api)
+- [TYPES](#types)
+- [GLOBALS](#globals)
   - [exports](#exports)
-  - [module.exported](#moduleexported)
-  - [module.exports](#moduleexports)
-  - [module.require](#modulerequire)
+  - [module](#module)
+    - [exported](#moduleexported)
+    - [exports](#moduleexports)
+    - [require](#modulerequire)
   - [require](#require)
+- [EXPORTS](#exports-1)
+  - [default](#default)
 - [CAVEATS](#caveats)
   - [Scope](#scope)
 - [DEVELOPMENT](#development)
@@ -37,8 +41,8 @@ UnCommonJS - a minimum viable shim for `module.exports`
 
 - `module.exports`
 - `exports`
-- supports live exports (ESM emulation)
 - pluggable `require`
+- supports live exports (ESM emulation)
 - tiny (~ 700 B minified + gzipped)
 - no dependencies
 - fully typed (TypeScript)
@@ -118,12 +122,41 @@ This is a hack to get CommonJS modules working in constrained environments such
 as userscripts when no other option is available. It shouldn't be used in
 situations or environments where sane solutions are available.
 
-# API
+# TYPES
 
-When the shim is loaded, `module`, `exports` and `require` are defined as
-global variables if they're not defined already. Unless noted, they should have
-the same behavior as the corresponding values in Node.js and other CommonJS
-environments.
+The following types are referenced in the descriptions below.
+
+<details>
+
+```typescript
+type Exports = Record<PropertyKey, unknown>
+type Require = (id: string) => unknown
+
+type Module = {
+    readonly exported: Exports;
+    require: Require;
+    exports: any;
+}
+
+type Environment = {
+    module: Module;
+    exports: Exports;
+    require: Require;
+}
+
+type Options = {
+    require?: Require;
+}
+```
+
+</details>
+
+# GLOBALS
+
+When the shim is loaded, [`module`](#module), [`exports`](#exports) and
+[`require`](#require) are defined as global variables if they're not defined
+already. Unless noted, they should have the same behavior as the corresponding
+values in Node.js and other CommonJS environments.
 
 ```javascript
 import '@chocolateboy/uncommonjs/polyfill'
@@ -132,8 +165,8 @@ module.exports = 42
 console.log(module.exported) // { "default": 42 }
 ```
 
-The API can be loaded without being automatically registered via the module's
-main file, e.g.:
+The API can be [imported](#exports-1) without being automatically registered via
+the module's main file, e.g.:
 
 ```javascript
 import cjs from '@chocolateboy/uncommonjs'
@@ -144,9 +177,14 @@ Object.assign(globalThis, env)
 
 ## exports
 
-This is an alias for [`module.exports`](#moduleexports).
+An alias for [`module.exports`](#moduleexports).
 
-## module.exported
+## module
+
+An object which contains the following fields:
+
+<!-- TOC:display:exported -->
+### module.exported
 
 [`module.exports`](#moduleexports) (and its [`exports`](#exports) alias) is
 implemented as a thin wrapper (an ES6 Proxy) around the actual exports which
@@ -166,7 +204,8 @@ console.log(module.exported)
 // Object { once: ..., sha1: ..., sha256: ..., ... }
 ```
 
-## module.exports
+<!-- TOC:display:exports -->
+### module.exports
 
 An object (dictionary) of exported values which can be assigned to by name, e.g.:
 
@@ -223,7 +262,8 @@ module.exports.bar = bar
 module.exports.default = props
 ```
 
-## module.require
+<!-- TOC:display:require -->
+### module.require
 
 An alias for the [`require`](#require) export. Can be assigned a new `require`
 implementation which is used whenever the exported `require` function is
@@ -249,6 +289,41 @@ the module.
 The default implementation is a stub which raises an exception which includes
 the name of the required module. It can be overridden by assigning to
 [`module.require`](#modulerequire).
+
+# EXPORTS
+
+## default
+
+**Type**: `(options?: Options) => Environment`
+
+```javascript
+import cjs from '@chocolateboy/uncommonjs'
+
+const mods = {
+    'is-even': (value => value % 2 === 0),
+    'is-odd':  (value => value % 2 === 1),
+}
+
+const myRequire = id => mods[id] || throw new Error(...)
+const env = cjs({ require: myRequire })
+
+Object.assign(globalThis, env)
+```
+
+A function which generates a new CommonJS environment, i.e. an object
+containing CommonJS-compatible [`module`](#module), [`exports`](#exports) and
+[`require`](#require) properties.
+
+Takes an optional options object supporting the following options:
+
+<!-- TOC:ignore -->
+### require
+
+**Type**: `Require`
+
+A `require` implementation which is delegated to by the exported
+[`require`](#require) function. If not supplied, it defaults to a function
+which raises an exception with the supplied module ID.
 
 # CAVEATS
 

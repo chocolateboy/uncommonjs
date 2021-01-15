@@ -1,14 +1,14 @@
 'use strict';
 
 const test = require('ava')
-const env  = require('../dist/index.js')
+const cjs  = require('../dist/index.js')
 
 function foo () { return 'Foo' }
 function bar () { return 'Bar' }
 function baz () { return 'Baz' }
 
 test.beforeEach(t => {
-    t.context.$ = env()
+    t.context.$ = cjs()
 })
 
 test.afterEach(t => {
@@ -246,12 +246,24 @@ test('require', t => {
 
     // require is not implemented
     t.throws(() => $.require('fs'), { message: /not implemented/ })
+})
+
+test('module.require', t => {
+    const { $ } = t.context
 
     // require can be overridden
-    $.module.require = id => ({ required: id })
+    $.module.require = id => ({ overridden: id })
 
-    t.deepEqual($.require('left-pad'), { required: 'left-pad' })
-    t.deepEqual($.require('is-thirteen'), { required: 'is-thirteen' })
+    t.deepEqual($.require('foo'), { overridden: 'foo' })
+    t.deepEqual($.require('bar'), { overridden: 'bar' })
+})
+
+test('options.require', t => {
+    // require can be initialized
+    const $ = cjs({ require: id => ({ initialized: id }) })
+
+    t.deepEqual($.require('baz'), { initialized: 'baz' })
+    t.deepEqual($.require('quux'), { initialized: 'quux' })
 })
 
 test('live exports', t => {

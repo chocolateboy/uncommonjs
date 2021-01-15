@@ -1,3 +1,8 @@
+## 3.1.0 - TBD
+
+- add an option to assign the `require` function when creating an
+  environment
+
 ## 3.0.1 - 2021-01-15
 
 - remove unused dev dependency
