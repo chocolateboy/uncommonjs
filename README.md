@@ -125,7 +125,7 @@ the same behavior as the corresponding values in Node.js and other CommonJS
 environments.
 
 ```javascript
-import '@chocolatey/uncommonjs/polyfill'
+import '@chocolateboy/uncommonjs/polyfill'
 
 module.exports = 42
 console.log(module.exported) // { "default": 42 }
@@ -135,7 +135,7 @@ The API can be loaded without being automatically registered via the module's
 main file, e.g.:
 
 ```javascript
-import cjs from '@chocolatey/uncommonjs'
+import cjs from '@chocolateboy/uncommonjs'
 
 const env = cjs() // { module: ..., exports: ..., require: ... }
 Object.assign(globalThis, env)
@@ -357,7 +357,7 @@ The following NPM scripts are available:
 
 # COPYRIGHT AND LICENSE
 
-Copyright © 2020 by chocolateboy.
+Copyright © 2020-2021 by chocolateboy.
 
 This is free software; you can redistribute it and/or modify it under the
 terms of the [Artistic License 2.0](https://www.opensource.org/licenses/artistic-license-2.0.php).
