@@ -1,4 +1,4 @@
-## 3.1.1 - TBD
+## 3.1.1 - 2021-01-16
 
 - improve identity detection
 

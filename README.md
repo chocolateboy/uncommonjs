@@ -59,7 +59,7 @@ UnCommonJS - a minimum viable shim for `module.exports`
 // @name          My Userscript
 // @description   A userscript which uses some CommonJS modules
 // @include       https://www.example.com/*
-// @require       https://unpkg.com/@chocolateboy/uncommonjs@3.1.0
+// @require       https://unpkg.com/@chocolateboy/uncommonjs@3.1.1
 // @require       https://cdn.jsdelivr.net/npm/crypto-hash@1.2.2
 // @require       https://cdn.jsdelivr.net/npm/tiny-once@1.0.0
 // ==/UserScript==
@@ -106,7 +106,7 @@ from the `module.exports`/`exports` object:
 ```javascript
 // ==UserScript==
 // @name     My Userscript
-// @require  https://unpkg.com/@chocolateboy/uncommonjs@3.1.0
+// @require  https://unpkg.com/@chocolateboy/uncommonjs@3.1.1
 // @require  https://cdn.jsdelivr.net/npm/crypto-hash@1.2.2
 // @require  https://cdn.jsdelivr.net/npm/tiny-once@1.0.0
 // ==/UserScript==
@@ -356,7 +356,7 @@ doesn't. This means that the following won't work portably:
 // ==UserScript==
 // @name          Non-Portable Userscript
 // @include       *
-// @require       https://unpkg.com/@chocolateboy/uncommonjs@3.1.0
+// @require       https://unpkg.com/@chocolateboy/uncommonjs@3.1.1
 // @require       https://cdn.jsdelivr.net/npm/just-safe-get@2.0.0
 // ==/UserScript==
 
@@ -425,7 +425,7 @@ The following NPM scripts are available:
 
 # VERSION
 
-3.1.0
+3.1.1
 
 # AUTHOR
 
