@@ -237,13 +237,23 @@ test('module.exported', t => {
     $.module.exports = bar
 
     // module.exported !== module.exports
+    t.deepEqual($.module.exported, $.module.exports)
     t.not($.module.exported, $.module.exports)
 
-    // module.exported is immutable
-    t.throws(() => $.module.exported.baz = baz, {
-        instanceOf: TypeError,
-        message: /Cannot add property baz/,
-    })
+    // each property access returns a new snapshot (new reference)
+    const exported1 = $.module.exported
+    const exported2 = $.module.exported
+
+    t.deepEqual(exported1, exported2)
+    t.not(exported1, exported2)
+
+    // assigning to module.exported doesn't affect module.exports
+    const exported = $.module.exported
+
+    exported.baz = baz
+    t.is(exported.baz, baz)
+    t.is($.module.exports.baz, undefined)
+    t.is($.module.exported.baz, undefined)
 
     // module.exported matches module.exports
     t.deepEqual($.module.exports, { foo, bar })

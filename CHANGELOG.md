@@ -1,6 +1,10 @@
+## 3.1.2 - TBD
+
+- unfreeze module.exported
+
 ## 3.1.1 - 2021-01-16
 
-- improve identity detection
+- improve detection of duplicate assignments
 
 ## 3.1.0 - 2021-01-16
 

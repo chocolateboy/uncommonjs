@@ -26,7 +26,6 @@ export type Options = {
 const {
     assign:         __assign,
     defineProperty: __defineProperty,
-    freeze:         __freeze,
     is:             __is,
     keys:           __keys,
 } = Object
@@ -113,12 +112,10 @@ export default (options: Options = {}): Environment => {
 
     const $module = {
         get exported () {
-            const exported = __ownKeys($exported).reduce((acc, name) => {
+            return __ownKeys($exported).reduce((acc, name) => {
                 const descriptor = $exported[name as string]
                 return __defineProperty(acc, name, __assign({}, descriptor, { enumerable: true }))
             }, {})
-
-            return __freeze(exported)
         },
 
         get exports () {

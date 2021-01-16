@@ -181,7 +181,7 @@ An alias for [`module.exports`](#moduleexports).
 
 ## module
 
-An object which contains the following fields:
+An object which contains the following properties:
 
 <!-- TOC:display:exported -->
 ### module.exported
