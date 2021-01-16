@@ -1,3 +1,7 @@
+## 3.1.1 - TBD
+
+- improve identity detection
+
 ## 3.1.0 - 2021-01-16
 
 - add an option to assign the `require` function when creating an

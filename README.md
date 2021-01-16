@@ -43,7 +43,7 @@ UnCommonJS - a minimum viable shim for `module.exports`
 - `exports`
 - pluggable `require`
 - supports live exports (ESM emulation)
-- tiny (~ 700 B minified + gzipped)
+- tiny (&lt; 750 B minified + gzipped)
 - no dependencies
 - fully typed (TypeScript)
 - CDN builds - [jsDelivr][], [unpkg][]

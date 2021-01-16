@@ -27,6 +27,7 @@ const {
     assign:         __assign,
     defineProperty: __defineProperty,
     freeze:         __freeze,
+    is:             __is,
     keys:           __keys,
 } = Object
 
@@ -53,7 +54,7 @@ const assign = (exported: Exported, name: PropertyKey, descriptor: PropertyDescr
             assigned = exported.hasOwnProperty(unique) && exported[unique]
 
             if (assigned) {
-                if (descriptor.get === assigned.get && descriptor.value === assigned.value) {
+                if (descriptor.get === assigned.get && __is(descriptor.value, assigned.value)) {
                     return true
                 }
             } else {

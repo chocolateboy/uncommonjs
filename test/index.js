@@ -55,8 +55,15 @@ test('duplicate named exports', t => {
     $.module.exports = bar
     $.module.exports.baz = baz
     $.module.exports = baz
+    $.module.exports.quux = NaN
+    $.module.exports.quux = NaN
 
-    t.deepEqual($.module.exports, { foo, bar, baz })
+    t.deepEqual($.module.exports, {
+        foo,
+        bar,
+        baz,
+        quux: NaN,
+    })
 })
 
 test('duplicate anonymous exports', t => {
@@ -66,8 +73,14 @@ test('duplicate anonymous exports', t => {
     $.module.exports = 42
     $.module.exports = 'foo'
     $.module.exports = 'foo'
+    $.module.exports = NaN
+    $.module.exports = NaN
 
-    t.deepEqual($.module.exports, { default: 42, default_1: 'foo' })
+    t.deepEqual($.module.exports, {
+        default: 42,
+        default_1: 'foo',
+        default_2: NaN,
+    })
 })
 
 test('multiple named exports (different names)', t => {
