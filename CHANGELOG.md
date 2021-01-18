@@ -1,4 +1,4 @@
-## 3.1.2 - TBD
+## 3.1.2 - 2021-01-18
 
 - unfreeze module.exported
 
