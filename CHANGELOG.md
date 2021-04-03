@@ -1,3 +1,7 @@
+## 3.2.0 - TBD
+
+- relicense: Artistic 2.0 -> MIT
+
 ## 3.1.2 - 2021-01-18
 
 - unfreeze module.exported
