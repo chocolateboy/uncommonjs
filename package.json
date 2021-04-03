@@ -4,7 +4,7 @@
     "description": "A minimum viable shim for module.exports",
     "author": "chocolateboy",
     "repository": "https://github.com/chocolateboy/uncommonjs",
-    "license": "Artistic-2.0",
+    "license": "MIT",
     "main": "dist/index.js",
     "module": "dist/index.esm.js",
     "jsdelivr": "dist/polyfill.iife.min.js",
