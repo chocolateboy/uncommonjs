@@ -1,9 +1,11 @@
 name: publish
 
+# conditions are ORed together, so we need to fail the branch match to only
+# trigger on tag changes
 on:
   push:
     branches:
-      - master
+      - '!*'
     tags:
       - 'v*'
 
