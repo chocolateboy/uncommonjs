@@ -11,7 +11,7 @@
     "unpkg": "dist/polyfill.iife.min.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "build": "rollup -c --exports auto",
+        "build": "rollup --no-treeshake -c --exports auto",
         "build:doc": "toc-md README.md",
         "build:release": "run-s clean build build:types build:doc",
         "build:types": "run-s build:types:run build:types:copy build:types:clean",
