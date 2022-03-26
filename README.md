@@ -61,7 +61,7 @@ UnCommonJS - a minimum viable shim for `module.exports`
 // @name          My Userscript
 // @description   A userscript which uses some CommonJS modules
 // @include       https://www.example.com/*
-// @require       https://unpkg.com/@chocolateboy/uncommonjs@3.1.2
+// @require       https://unpkg.com/@chocolateboy/uncommonjs@3.2.0
 // @require       https://cdn.jsdelivr.net/npm/crypto-hash@1.3.0
 // @require       https://cdn.jsdelivr.net/npm/tiny-once@1.0.0
 // ==/UserScript==
@@ -111,7 +111,7 @@ from the `module.exports`/`exports` object:
 ```javascript
 // ==UserScript==
 // @name     My Userscript
-// @require  https://unpkg.com/@chocolateboy/uncommonjs@3.1.2
+// @require  https://unpkg.com/@chocolateboy/uncommonjs@3.2.0
 // @require  https://cdn.jsdelivr.net/npm/crypto-hash@1.3.0
 // @require  https://cdn.jsdelivr.net/npm/tiny-once@1.0.0
 // ==/UserScript==
@@ -132,7 +132,7 @@ environments which only support ESM such as [Deno][] and [QuickJS][].
 Deno
 exit using ctrl+d or close()
 
-> import 'https://unpkg.com/@chocolateboy/uncommonjs@3.1.2'
+> import 'https://unpkg.com/@chocolateboy/uncommonjs@3.2.0'
 > import 'https://unpkg.com/micro-down@1.6.2'
 
 > exports.parse('Hi, **this** _is_ [Markdown](#markdown)!')
@@ -379,7 +379,7 @@ doesn't. This means that the following won't work portably:
 // ==UserScript==
 // @name          Non-Portable Userscript
 // @include       *
-// @require       https://unpkg.com/@chocolateboy/uncommonjs@3.1.2
+// @require       https://unpkg.com/@chocolateboy/uncommonjs@3.2.0
 // @require       https://cdn.jsdelivr.net/npm/just-safe-get@4.0.1
 // ==/UserScript==
 
@@ -448,7 +448,7 @@ The following NPM scripts are available:
 
 # VERSION
 
-3.1.2
+3.2.0
 
 # AUTHOR
 
@@ -456,7 +456,7 @@ The following NPM scripts are available:
 
 # COPYRIGHT AND LICENSE
 
-Copyright © 2020-2021 by chocolateboy.
+Copyright © 2020 by chocolateboy.
 
 This is free software; you can redistribute it and/or modify it under the terms
 of the [MIT license](https://opensource.org/licenses/MIT).

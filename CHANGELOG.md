@@ -1,4 +1,4 @@
-## 3.2.0 - TBD
+## 3.2.0 - 2022-03-26
 
 - relicense: Artistic 2.0 -> MIT
 - add note about Deno usage
