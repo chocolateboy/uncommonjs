@@ -11,6 +11,8 @@
 - [USAGE](#usage)
 - [DESCRIPTION](#description)
   - [Why?](#why)
+    - [Userscripts](#userscripts)
+    - [ESM-only environments](#esm-only-environments)
   - [Why not?](#why-not)
 - [TYPES](#types)
 - [GLOBALS](#globals)
@@ -60,7 +62,7 @@ UnCommonJS - a minimum viable shim for `module.exports`
 // @description   A userscript which uses some CommonJS modules
 // @include       https://www.example.com/*
 // @require       https://unpkg.com/@chocolateboy/uncommonjs@3.1.2
-// @require       https://cdn.jsdelivr.net/npm/crypto-hash@1.2.2
+// @require       https://cdn.jsdelivr.net/npm/crypto-hash@1.3.0
 // @require       https://cdn.jsdelivr.net/npm/tiny-once@1.0.0
 // ==/UserScript==
 
@@ -88,8 +90,11 @@ integrate third-party modules.
 
 ## Why?
 
-I use it to work around NPM modules that don't have UMD builds when I want to
-use one of those modules in a [userscript](https://github.com/chocolateboy/userscripts).
+### Userscripts
+
+I mainly use it to work around NPM modules that don't have UMD builds when I
+want to use one in a [userscript][userscripts] (and as a way to import
+dependencies that *are* available as UMD bundles without polluting `window`).
 
 For example, let's say I want to use the following modules, which are available
 on NPM but don't have UMD builds:
@@ -107,13 +112,31 @@ from the `module.exports`/`exports` object:
 // ==UserScript==
 // @name     My Userscript
 // @require  https://unpkg.com/@chocolateboy/uncommonjs@3.1.2
-// @require  https://cdn.jsdelivr.net/npm/crypto-hash@1.2.2
+// @require  https://cdn.jsdelivr.net/npm/crypto-hash@1.3.0
 // @require  https://cdn.jsdelivr.net/npm/tiny-once@1.0.0
 // ==/UserScript==
 
 const { once, sha256: encrypt } = module.exports
 
 // ...
+```
+
+### ESM-only environments
+
+It can also be used to add support for (dependency-free) NPM modules to
+environments which only support ESM such as [Deno][] and [QuickJS][].
+
+> $ deno
+
+```
+Deno
+exit using ctrl+d or close()
+
+> import 'https://unpkg.com/@chocolateboy/uncommonjs@3.1.2'
+> import 'https://unpkg.com/micro-down@1.6.2'
+
+> exports.parse('Hi, **this** _is_ [Markdown](#markdown)!')
+'<p>Hi, <strong>this</strong> <em>is</em> <a href="#markdown" >Markdown</a>!</p>'
 ```
 
 ## Why not?
@@ -357,7 +380,7 @@ doesn't. This means that the following won't work portably:
 // @name          Non-Portable Userscript
 // @include       *
 // @require       https://unpkg.com/@chocolateboy/uncommonjs@3.1.2
-// @require       https://cdn.jsdelivr.net/npm/just-safe-get@2.0.0
+// @require       https://cdn.jsdelivr.net/npm/just-safe-get@4.0.1
 // ==/UserScript==
 
 const { get } = exports // SyntaxError
@@ -438,5 +461,8 @@ Copyright © 2020-2021 by chocolateboy.
 This is free software; you can redistribute it and/or modify it under the terms
 of the [MIT license](https://opensource.org/licenses/MIT).
 
-[jsDelivr]: https://cdn.jsdelivr.net/npm/@chocolateboy/uncommonjs
+[Deno]: https://deno.land/
+[jsDelivr]: https://unpkg.com/browse/@chocolateboy/uncommonjs
+[QuickJS]: https://bellard.org/quickjs/
 [unpkg]: https://unpkg.com/@chocolateboy/uncommonjs
+[userscripts]: https://github.com/chocolateboy/userscripts
