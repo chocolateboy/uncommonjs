@@ -73,4 +73,5 @@ test('override require', t => {
     t.throws(() => global.require('baz'), { message: /not implemented/ })
     global.module.require = () => 'require-2'
     t.is(global.require('baz'), 'require-2')
+    t.is(global.module.require('baz'), 'require-2')
 })
