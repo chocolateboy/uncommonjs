@@ -45,7 +45,7 @@ UnCommonJS - a minimum viable shim for `module.exports`
 - `exports`
 - pluggable `require`
 - supports live exports (ESM emulation)
-- tiny (&lt; 750 B minified + gzipped)
+- tiny (&lt; 700 B minified + gzipped)
 - no dependencies
 - fully typed (TypeScript)
 - CDN builds - [jsDelivr][], [unpkg][]
@@ -152,13 +152,14 @@ The following types are referenced in the descriptions below.
 <details>
 
 ```typescript
-type Exports = Record<PropertyKey, unknown>
-type Require = (id: string) => unknown
+type Exports = Record<PropertyKey, any>
+type Require = (id: string) => any
 
 type Module = {
+    get exports (): Exports;
+    set exports (value: any);
     readonly exported: Exports;
     require: Require;
-    exports: any;
 }
 
 type Environment = {
@@ -425,9 +426,14 @@ exports.get(obj, path) // OK
 
 The following NPM scripts are available:
 
-- build - generate the minified build of the library (index.min.js)
+- build - compile the library for testing and save to the target directory
 - build:doc - update the table-of-contents (TOC) in the README
-- test - run the test suite
+- build:release - compile the library for release and save to the target directory
+- clean - remove the target directory and its contents
+- rebuild - clean the target directory and recompile the library
+- test - recompile the library and run the test suite
+- test:run - run the test suite
+- typecheck - sanity check the library's type definitions
 
 </details>
 

@@ -24,10 +24,6 @@ test.afterEach(t => {
     }
 })
 
-test('toStringTag', t => {
-    t.is({}.toString.call(t.context.$), '[object UnCommonJS]')
-})
-
 test('single explicitly named export', t => {
     const { $ } = t.context
     $.module.exports.foo = foo

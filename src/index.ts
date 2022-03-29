@@ -1,18 +1,13 @@
-type Exported = Record<string | symbol, PropertyDescriptor>;
-
-export type Exports = Record<PropertyKey, unknown>;
-export type Require = (id: string) => unknown;
+export type Exports = Record<PropertyKey, any>;
+export type Require = (id: string) => any;
 export type Module = {
+    get exports (): Exports;
+    set exports (value: any);
     readonly exported: Exports;
     require: Require;
-
-    // XXX TypeScript doesn't allow getters and setters to return different
-    // types
-    exports: any;
 };
 
 export type Environment = {
-    [Symbol.toStringTag]: string;
     module: Module;
     exports: Exports;
     require: Require;
@@ -21,6 +16,8 @@ export type Environment = {
 export type Options = {
     require?: Require;
 };
+
+type Descriptors = Record<string | symbol, PropertyDescriptor>;
 
 // minification helpers
 const {
@@ -42,7 +39,7 @@ const isPlainObject = (value: any): value is Record<string, unknown> => {
 
 // translate the requested name into a unique name and assign the supplied
 // value to it if it doesn't already exist
-const assign = (exported: Exported, name: PropertyKey, descriptor: PropertyDescriptor) => {
+const assign = (descriptors: Descriptors, name: PropertyKey, descriptor: PropertyDescriptor) => {
     let unique: string | symbol
 
     if (typeof name === 'symbol') {
@@ -50,7 +47,7 @@ const assign = (exported: Exported, name: PropertyKey, descriptor: PropertyDescr
     } else {
         for (let i = 0, assigned; ; ++i) {
             unique = name + (i === 0 ? '' : `_${i}`)
-            assigned = exported.hasOwnProperty(unique) && exported[unique]
+            assigned = descriptors.hasOwnProperty(unique) && descriptors[unique]
 
             if (assigned) {
                 if (descriptor.get === assigned.get && __is(descriptor.value, assigned.value)) {
@@ -62,8 +59,7 @@ const assign = (exported: Exported, name: PropertyKey, descriptor: PropertyDescr
         }
     }
 
-    // XXX https://github.com/microsoft/TypeScript/issues/1863
-    exported[unique as string] = descriptor
+    descriptors[unique] = descriptor
 
     // the set and defineProperty traps must return true
     return true
@@ -78,9 +74,9 @@ export default (options: Options = {}): Environment => {
     let _require: Require = options.require || defaultRequire
 
     // the underlying dictionary
-    const $exported: Exported = {}
+    const descriptors: Descriptors = {}
 
-    const $exports: Exports = new Proxy($exported, {
+    const $exports: Exports = new Proxy(descriptors, {
         defineProperty: assign,
 
         get (target, name, receiver) {
@@ -88,8 +84,7 @@ export default (options: Options = {}): Environment => {
                 return __get(target, name)
             }
 
-            const descriptor = target[name as string]
-            const { get, value } = descriptor
+            const { get, value } = target[name]
 
             return get ? get.call(receiver) : value
         },
@@ -101,7 +96,7 @@ export default (options: Options = {}): Environment => {
                 value,
                 configurable: true,
                 enumerable: true,
-                writable: true
+                writable: true,
             })
         },
 
@@ -111,14 +106,17 @@ export default (options: Options = {}): Environment => {
     const $require = function require (id: string) { return _require(id) }
 
     const $module = {
-        get exported () {
-            return __ownKeys($exported).reduce((acc, name) => {
-                const descriptor = $exported[name as string]
-                return __defineProperty(acc, name, __assign({}, descriptor, { enumerable: true }))
+        get exported (): Exports {
+            return __ownKeys(descriptors).reduce((acc, name) => {
+                return __defineProperty(
+                    acc,
+                    name,
+                    __assign({}, descriptors[name], { enumerable: true })
+                )
             }, {})
         },
 
-        get exports () {
+        get exports (): Exports {
             return $exports
         },
 
@@ -155,7 +153,6 @@ export default (options: Options = {}): Environment => {
     }
 
     return {
-        [Symbol.toStringTag]: 'UnCommonJS',
         exports: $exports,
         module: $module,
         require: $require,

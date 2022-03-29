@@ -1,3 +1,10 @@
+## 3.2.1 - TBD
+
+- type fixes:
+  - relax exposed unknown types to `any` to avoid forcing casts
+  - correctly type `module.exports`
+- reduce the size of the minified build
+
 ## 3.2.0 - 2022-03-26
 
 - relicense: Artistic 2.0 -> MIT
@@ -5,7 +12,7 @@
 
 ## 3.1.2 - 2021-01-18
 
-- unfreeze module.exported
+- unfreeze `module.exported`
 
 ## 3.1.1 - 2021-01-16
 
@@ -37,17 +44,17 @@
 
 ## 2.0.0 - 2020-08-26
 
-#### Breaking Change
+### Breaking Change
 
 - clarify that ES6 support is required, not just ES6 Proxy support, since other
   features may be used (bumped the major version in case anyone was relying on
   partial support and a polyfill)
 
-#### Features
+### Features
 
 - generate cleaner (flatter) names
 
-#### Fixes
+### Fixes
 
 - improve detection of duplicate assignments
 
@@ -61,7 +68,7 @@
 
 ## 0.3.2 - 2020-08-06
 
-- portability fixes
+- portability fixes:
   - return true from the Proxy#set trap as required by the spec
   - catch the ReferenceError when assigning undeclared variables in strict
     mode and fall back to `globalThis`
