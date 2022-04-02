@@ -1,4 +1,4 @@
-## 3.2.1 - TBD
+## 3.2.1 - 2022-04-02
 
 - type fixes:
   - relax exposed unknown types to `any` to avoid forcing casts
