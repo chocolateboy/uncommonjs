@@ -226,6 +226,19 @@ test('duplicate assignments', t => {
     t.deepEqual($.module.exports, { foo: 1, foo_1: 2, foo_2: 3 })
 })
 
+test('module.exports', t => {
+    const { $ } = t.context
+
+    $.module.exports.foo = foo
+    $.module.exports.bar = bar
+    $.module.exports = { baz }
+
+    t.is($.module.exports.constructor, Object)
+    t.deepEqual(Object.keys($.module.exports), ['foo', 'bar', 'baz', 'default'])
+    t.deepEqual(Object.values($.module.exports), [foo, bar, baz, { baz }])
+    t.deepEqual(Object.entries($.module.exports), [['foo', foo], ['bar', bar], ['baz', baz], ['default', { baz }]])
+})
+
 test('module.exported', t => {
     const { $ } = t.context
 
