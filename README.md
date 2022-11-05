@@ -352,13 +352,16 @@ which raises an exception with the supplied module ID.
 # CAVEATS
 
 - By default, `require` is defined but not implemented (it throws an
-  exception): check the required modules to ensure they don't use it
-- `__filename` and `__dirname` are not supported
-- Pin the versions of the required modules to avoid being caught out if they
-  update their dependencies
+  exception): check the required modules to ensure they don't use it.
+- `__filename` and `__dirname` are not supported.
+- Pin the versions of required modules to avoid being caught out if they
+  update their dependencies.
 - Unless a compatible [`require`](#require) has been [defined](#modulerequire),
   load UMD bundles which use `require` **before** this shim, otherwise it will
-  mislead them into thinking it's a real CommonJS environment
+  mislead them into thinking it's a real CommonJS environment.
+- Check the assigned export names as they may not always match the declared
+  names even if there are no conflicts. Some bundlers (e.g. tsc) [initialize][tsc]
+  exports to `undefined`, which causes the assigned names to be suffixed.
 
 ## Scope
 
@@ -468,6 +471,7 @@ This is free software; you can redistribute it and/or modify it under the terms
 of the [MIT license](https://opensource.org/licenses/MIT).
 
 [Deno]: https://deno.land/
+[tsc]: https://github.com/dankogai/js-combinatorics/blob/6d14260d9b85519d98f1836a3a46c7b859dec514/umd/combinatorics.js#L12
 [jsDelivr]: https://unpkg.com/browse/@chocolateboy/uncommonjs
 [QuickJS]: https://bellard.org/quickjs/
 [unpkg]: https://unpkg.com/@chocolateboy/uncommonjs
