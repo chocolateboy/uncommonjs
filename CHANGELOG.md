@@ -82,7 +82,7 @@
 
 ## 0.3.0 - 2020-07-29
 
-- don't dedup the names of duplicate assignments, e.g.:
+- don't assign multiple names for duplicate assignments, e.g.:
   `exports.foo = foo && exports.foo = foo`
 - fix assignment to generated names, e.g. assigning to `foo_1`
 - add missing license
