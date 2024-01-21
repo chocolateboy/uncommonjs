@@ -29,6 +29,9 @@
 - [DEVELOPMENT](#development)
 - [COMPATIBILITY](#compatibility)
 - [SEE ALSO](#see-also)
+  - [Articles](#articles)
+  - [Libraries](#libraries)
+  - [Web Services](#web-services)
 - [VERSION](#version)
 - [AUTHOR](#author)
 - [COPYRIGHT AND LICENSE](#copyright-and-license)
@@ -449,11 +452,19 @@ The following NPM scripts are available:
 
 # SEE ALSO
 
-- [GreasyFork Libraries](https://greasyfork.org/scripts/libraries)
+## Articles
+
 - [Observable - How to require stubborn modules](https://observablehq.com/@observablehq/how-to-require-stubborn-modules)
-- [packd](https://github.com/Rich-Harris/packd) - a [web service](https://bundle.run/) which converts NPM packages to UMD bundles
+
+## Libraries
+
+- [GreasyFork Libraries](https://greasyfork.org/scripts/libraries)
 - [quickjs-require](https://github.com/IvanGaravito/quickjs-require) - a CommonJS `require` implementation for QuickJS
-- [REPKG](https://github.com/privatenumber/repkg) - a [web service](https://repkg.now.sh/) which converts NPM packages to UMD bundles
+
+## Web Services
+
+- [packd](https://github.com/Rich-Harris/packd) - a [~web service~](https://bundle.run/) which converts NPM packages to UMD bundles
+- [REPKG](https://github.com/privatenumber/repkg) - a [~web service~](https://repkg.now.sh/) which converts NPM packages to UMD bundles
 
 # VERSION
 
@@ -471,8 +482,8 @@ This is free software; you can redistribute it and/or modify it under the terms
 of the [MIT license](https://opensource.org/licenses/MIT).
 
 [Deno]: https://deno.land/
-[tsc]: https://github.com/dankogai/js-combinatorics/blob/6d14260d9b85519d98f1836a3a46c7b859dec514/umd/combinatorics.js#L12
 [jsDelivr]: https://unpkg.com/browse/@chocolateboy/uncommonjs
 [QuickJS]: https://bellard.org/quickjs/
+[tsc]: https://github.com/dankogai/js-combinatorics/blob/6d14260d9b85519d98f1836a3a46c7b859dec514/umd/combinatorics.js#L12
 [unpkg]: https://unpkg.com/@chocolateboy/uncommonjs
 [userscripts]: https://github.com/chocolateboy/userscripts
